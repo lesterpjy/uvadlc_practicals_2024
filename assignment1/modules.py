@@ -44,13 +44,22 @@ class LinearModule(object):
 
         # Note: For the sake of this assignment, please store the parameters
         # and gradients in this format, otherwise some unit tests might fail.
-        self.params = {'weight': None, 'bias': None} # Model parameters
-        self.grads = {'weight': None, 'bias': None} # Gradients
+        self.params = {"weight": None, "bias": None}  # Model parameters
+        self.grads = {"weight": None, "bias": None}  # Gradients
 
         #######################
         # PUT YOUR CODE HERE  #
         #######################
-
+        self.params["weight"] = np.random.randn(in_features, out_features) * np.sqrt(
+            2 / in_features
+        )
+        self.params["bias"] = np.zeros(out_features)
+        self.grads["weight"] = np.zeros((in_features, out_features))
+        self.grads["bias"] = np.zeros(out_features)
+        if input_layer:
+            self.params["weight"] = np.random.randn(
+                in_features, out_features
+            ) * np.sqrt(1 / in_features)
         #######################
         # END OF YOUR CODE    #
         #######################
@@ -73,7 +82,7 @@ class LinearModule(object):
         #######################
         # PUT YOUR CODE HERE  #
         #######################
-
+        out = np.dot(x, self.params["weight"]) + self.params["bias"]
         #######################
         # END OF YOUR CODE    #
         #######################
@@ -97,7 +106,9 @@ class LinearModule(object):
         #######################
         # PUT YOUR CODE HERE  #
         #######################
-
+        self.grads["weight"] = np.dot(self.input.T, dout)
+        self.grads["bias"] = np.sum(dout, axis=0)
+        dx = np.dot(dout, self.params["weight"].T)
         #######################
         # END OF YOUR CODE    #
         #######################
@@ -114,7 +125,7 @@ class LinearModule(object):
         #######################
         # PUT YOUR CODE HERE  #
         #######################
-        pass
+        self.input = None
         #######################
         # END OF YOUR CODE    #
         #######################
