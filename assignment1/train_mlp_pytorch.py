@@ -28,6 +28,7 @@ from copy import deepcopy
 from tqdm.auto import tqdm
 from mlp_pytorch import MLP
 import cifar10_utils
+import matplotlib.pyplot as plt
 
 import torch
 import torch.nn as nn
@@ -55,7 +56,9 @@ def accuracy(predictions, targets):
     #######################
     # PUT YOUR CODE HERE  #
     #######################
-
+    predicted_classes = np.argmax(predictions, axis=1)
+    correct_predictions = np.sum(predicted_classes == targets)
+    accuracy = correct_predictions / targets.shape[0]
     #######################
     # END OF YOUR CODE    #
     #######################
@@ -83,7 +86,23 @@ def evaluate_model(model, data_loader):
     #######################
     # PUT YOUR CODE HERE  #
     #######################
+    # Test the best model on the test dataset
+    device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
+    model.eval()
+    correct = 0
+    total = 0
 
+    with torch.no_grad():  # Disables gradient computation for inference
+        for x_test, y_test in data_loader:
+            x_test = x_test.reshape(x_test.size(0), -1).to(device)
+            y_test = y_test.to(device)
+
+            logits_test = model(x_test)
+            _, predicted = torch.max(logits_test, 1)  # Get the predicted class
+            correct += (predicted == y_test).sum().item()
+            total += y_test.size(0)
+
+    avg_accuracy = correct / total  # Compute overall accuracy
     #######################
     # END OF YOUR CODE    #
     #######################
@@ -134,27 +153,117 @@ def train(hidden_dims, lr, use_batch_norm, batch_size, epochs, seed, data_dir):
         torch.backends.cudnn.benchmark = False
 
     # Set default device
-    device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
+    device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 
     # Loading the dataset
     cifar10 = cifar10_utils.get_cifar10(data_dir)
-    cifar10_loader = cifar10_utils.get_dataloader(cifar10, batch_size=batch_size,
-                                                  return_numpy=False)
+    cifar10_loader = cifar10_utils.get_dataloader(
+        cifar10, batch_size=batch_size, return_numpy=False
+    )
 
     #######################
     # PUT YOUR CODE HERE  #
     #######################
+    train_loader = cifar10_loader["train"]
+    val_loader = cifar10_loader["validation"]
+    test_loader = cifar10_loader["test"]
 
     # TODO: Initialize model and loss module
-    model = ...
-    loss_module = ...
+    n_inputs = 32 * 32 * 3  # CIFAR-10 image dimensions (32x32 RGB)
+    n_classes = 10  # CIFAR-10 has 10 classes
+    model = MLP(
+        n_inputs=n_inputs,
+        n_hidden=hidden_dims,
+        n_classes=n_classes,
+        use_batch_norm=use_batch_norm,
+    )
+    loss_module = nn.CrossEntropyLoss()
+    optimizer = torch.optim.SGD(model.parameters(), lr=lr)
+
     # TODO: Training loop including validation
-    # TODO: Do optimization with the simple SGD optimizer
-    val_accuracies = ...
+    val_accuracies = []
+    best_val_accuracy = 0.0
+    best_model = None
+    logging_dict = {"train_loss": [], "val_loss": [], "val_accuracy": []}
+
+    for epoch in range(epochs):
+        model.train()
+        epoch_loss = 0.0
+        correct_train = 0
+        total_train = 0
+
+        # Training loop
+        for x_batch, y_batch in tqdm(
+            train_loader, desc=f"Training Epoch {epoch+1}/{epochs}"
+        ):
+            # Flatten input images for MLP
+            x_batch = x_batch.reshape(x_batch.shape[0], -1).to(device)
+            y_batch = y_batch.to(device)
+
+            optimizer.zero_grad()
+            # Make predictions for this batch
+            logits = model(x_batch)
+            # Compute the loss and its gradients
+            loss = loss_module(logits, y_batch)
+            loss.backward()
+            # Adjust learning weights
+            optimizer.step()
+
+            epoch_loss += loss.item()
+            _, predicted = torch.max(logits, 1)
+            correct_train += (predicted == y_batch).sum().item()
+            total_train += y_batch.size(0)
+
+        train_accuracy = correct_train / total_train
+        avg_train_loss = epoch_loss / len(train_loader)
+        logging_dict["train_loss"].append(avg_train_loss)
+
+        print(
+            f"Epoch {epoch+1}/{epochs}, Training Loss: {avg_train_loss:.4f}, Training Accuracy: {train_accuracy:.4f}"
+        )
+
+        # TODO: Do optimization with the simple SGD optimizer
+        model.eval()
+        val_loss = 0.0
+        correct_val = 0
+        total_val = 0
+
+        with torch.no_grad():
+            for x_val, y_val in val_loader:
+                x_val = x_val.reshape(x_val.size(0), -1).to(device)
+                y_val = y_val.to(device)
+
+                logits_val = model(x_val)
+                loss = loss_module(logits_val, y_val)
+                val_loss += loss.item()
+
+                _, predicted_val = torch.max(logits_val, 1)
+                correct_val += (predicted_val == y_val).sum().item()
+                total_val += y_val.size(0)
+
+        val_accuracy = correct_val / total_val
+        avg_val_loss = val_loss / len(val_loader)
+        val_accuracies.append(val_accuracy)
+        logging_dict["val_loss"].append(avg_val_loss)
+        logging_dict["val_accuracy"].append(val_accuracy)
+
+        print(
+            f"Epoch {epoch+1}/{epochs}, Validation Loss: {avg_val_loss:.4f}, Validation Accuracy: {val_accuracy:.4f}"
+        )
+
+        # Check if the model is the best so far
+        if val_accuracy > best_val_accuracy:
+            best_val_accuracy = val_accuracy
+            best_model = deepcopy(model)
+
+    model = best_model
     # TODO: Test best model
-    test_accuracy = ...
+    test_accuracy = evaluate_model(model, test_loader)
+    print(f"Test Accuracy: {test_accuracy:.4f}")
+
     # TODO: Add any information you might want to save for plotting
-    logging_dict = ...
+    logging_dict["best_val_accuracy"] = best_val_accuracy
+    logging_dict["test_accuracy"] = test_accuracy
     #######################
     # END OF YOUR CODE    #
     #######################
@@ -162,32 +271,84 @@ def train(hidden_dims, lr, use_batch_norm, batch_size, epochs, seed, data_dir):
     return model, val_accuracies, test_accuracy, logging_dict
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     # Command line arguments
     parser = argparse.ArgumentParser()
 
     # Model hyperparameters
-    parser.add_argument('--hidden_dims', default=[128], type=int, nargs='+',
-                        help='Hidden dimensionalities to use inside the network. To specify multiple, use " " to separate them. Example: "256 128"')
-    parser.add_argument('--use_batch_norm', action='store_true',
-                        help='Use this option to add Batch Normalization layers to the MLP.')
+    parser.add_argument(
+        "--hidden_dims",
+        default=[128],
+        type=int,
+        nargs="+",
+        help='Hidden dimensionalities to use inside the network. To specify multiple, use " " to separate them. Example: "256 128"',
+    )
+    parser.add_argument(
+        "--use_batch_norm",
+        action="store_true",
+        help="Use this option to add Batch Normalization layers to the MLP.",
+    )
 
     # Optimizer hyperparameters
-    parser.add_argument('--lr', default=0.1, type=float,
-                        help='Learning rate to use')
-    parser.add_argument('--batch_size', default=128, type=int,
-                        help='Minibatch size')
+    parser.add_argument("--lr", default=0.1, type=float, help="Learning rate to use")
+    parser.add_argument("--batch_size", default=128, type=int, help="Minibatch size")
 
     # Other hyperparameters
-    parser.add_argument('--epochs', default=10, type=int,
-                        help='Max number of epochs')
-    parser.add_argument('--seed', default=42, type=int,
-                        help='Seed to use for reproducing results')
-    parser.add_argument('--data_dir', default='data/', type=str,
-                        help='Data directory where to store/find the CIFAR10 dataset.')
+    parser.add_argument("--epochs", default=10, type=int, help="Max number of epochs")
+    parser.add_argument(
+        "--seed", default=42, type=int, help="Seed to use for reproducing results"
+    )
+    parser.add_argument(
+        "--data_dir",
+        default="data/",
+        type=str,
+        help="Data directory where to store/find the CIFAR10 dataset.",
+    )
 
     args = parser.parse_args()
     kwargs = vars(args)
 
-    train(**kwargs)
+    model, val_accuracies, test_accuracy, logging_dict = train(**kwargs)
     # Feel free to add any additional functions, such as plotting of the loss curve here
+
+    plt.figure(figsize=(10, 5))
+    plt.plot(
+        range(1, len(val_accuracies) + 1), val_accuracies, label="Validation Accuracy"
+    )
+    plt.axhline(y=test_accuracy, color="r", linestyle="--", label="Test Accuracy")
+    plt.scatter(len(val_accuracies), test_accuracy, color="red")
+    plt.text(
+        len(val_accuracies),
+        test_accuracy,
+        f"{test_accuracy:.4f}",
+        fontsize=12,
+        color="red",
+        verticalalignment="bottom",
+        horizontalalignment="right",
+    )
+    plt.xlabel("Epoch")
+    plt.ylabel("Accuracy")
+    plt.title("Validation and Test Accuracies (Pytorch)")
+    plt.legend()
+    plt.grid(True)
+    plt.savefig("accuracies_plot_pytorch_bn.png")
+    plt.show()
+
+    plt.figure(figsize=(10, 5))
+    plt.plot(
+        range(1, len(logging_dict["train_loss"]) + 1),
+        logging_dict["train_loss"],
+        label="Training Loss",
+    )
+    plt.plot(
+        range(1, len(logging_dict["val_loss"]) + 1),
+        logging_dict["val_loss"],
+        label="Validation Loss",
+    )
+    plt.xlabel("Epoch")
+    plt.ylabel("Loss")
+    plt.title("Training and Validation Loss (Pytorch)")
+    plt.legend()
+    plt.grid(True)
+    plt.savefig("loss_plot_pytorch_bn.png")
+    plt.show()

@@ -59,7 +59,18 @@ class MLP(nn.Module):
         #######################
         # PUT YOUR CODE HERE  #
         #######################
-        pass
+        super(MLP, self).__init__()
+        self.layers = nn.ModuleList()
+        input_dim = n_inputs
+
+        for hidden_units in n_hidden:
+            self.layers.append(nn.Linear(input_dim, hidden_units))
+            if use_batch_norm:
+                self.layers.append(nn.BatchNorm1d(hidden_units))
+            self.layers.append(nn.ELU())
+            input_dim = hidden_units
+
+        self.layers.append(nn.Linear(input_dim, n_classes))
         #######################
         # END OF YOUR CODE    #
         #######################
@@ -81,7 +92,9 @@ class MLP(nn.Module):
         #######################
         # PUT YOUR CODE HERE  #
         #######################
-
+        out = x
+        for layer in self.layers:
+            out = layer.forward(out)
         #######################
         # END OF YOUR CODE    #
         #######################
@@ -94,4 +107,3 @@ class MLP(nn.Module):
         Returns the device on which the model is. Can be useful in some situations.
         """
         return next(self.parameters()).device
-

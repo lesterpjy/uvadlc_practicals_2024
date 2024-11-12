@@ -50,16 +50,17 @@ class LinearModule(object):
         #######################
         # PUT YOUR CODE HERE  #
         #######################
-        self.params["weight"] = np.random.randn(in_features, out_features) * np.sqrt(
+        self.params["weight"] = np.random.randn(out_features, in_features) * np.sqrt(
             2 / in_features
-        )
-        self.params["bias"] = np.zeros(out_features)
-        self.grads["weight"] = np.zeros((in_features, out_features))
-        self.grads["bias"] = np.zeros(out_features)
+        )  # shape: (N, M)
+        self.params["bias"] = np.zeros(out_features)  # shape: (N, 1)
+        self.grads["weight"] = np.zeros((out_features, in_features))  # shape: (N, M)
+        self.grads["bias"] = np.zeros(out_features)  # shape: (N, 1)
         if input_layer:
             self.params["weight"] = np.random.randn(
-                in_features, out_features
+                out_features, in_features
             ) * np.sqrt(1 / in_features)
+
         #######################
         # END OF YOUR CODE    #
         #######################
@@ -82,7 +83,9 @@ class LinearModule(object):
         #######################
         # PUT YOUR CODE HERE  #
         #######################
-        out = np.dot(x, self.params["weight"]) + self.params["bias"]
+        self.input = x  # shape: (S, M)
+        out = x @ self.params["weight"].T  # shape: (S, N)
+        out += self.params["bias"]  # shape: (S, N)
         #######################
         # END OF YOUR CODE    #
         #######################
@@ -106,9 +109,10 @@ class LinearModule(object):
         #######################
         # PUT YOUR CODE HERE  #
         #######################
-        self.grads["weight"] = np.dot(self.input.T, dout)
-        self.grads["bias"] = np.sum(dout, axis=0)
-        dx = np.dot(dout, self.params["weight"].T)
+        # dout shape: (S, N)
+        self.grads["weight"] = dout.T @ self.input  # shape: (N, M)
+        self.grads["bias"] = np.sum(dout, axis=0)  # shape: (1, N)
+        dx = dout @ self.params["weight"]  # shape: (S, M)
         #######################
         # END OF YOUR CODE    #
         #######################
@@ -157,7 +161,8 @@ class ELUModule(object):
         #######################
         # PUT YOUR CODE HERE  #
         #######################
-
+        self.input = x
+        out = np.where(x > 0, x, self.alpha * (np.exp(x) - 1))
         #######################
         # END OF YOUR CODE    #
         #######################
@@ -179,7 +184,7 @@ class ELUModule(object):
         #######################
         # PUT YOUR CODE HERE  #
         #######################
-
+        dx = dout * np.where(self.input > 0, 1, self.alpha * np.exp(self.input))
         #######################
         # END OF YOUR CODE    #
         #######################
@@ -196,7 +201,7 @@ class ELUModule(object):
         #######################
         # PUT YOUR CODE HERE  #
         #######################
-        pass
+        self.input = None
         #######################
         # END OF YOUR CODE    #
         #######################
@@ -225,7 +230,13 @@ class SoftMaxModule(object):
         #######################
         # PUT YOUR CODE HERE  #
         #######################
+        # Max Trick for numerical stability
+        x_shifted = x - np.max(x, axis=1, keepdims=True)
+        exp_x = np.exp(x_shifted)
+        out = exp_x / np.sum(exp_x, axis=1, keepdims=True)
 
+        # Cache the output for use in the backward pass
+        self.out = out
         #######################
         # END OF YOUR CODE    #
         #######################
@@ -247,7 +258,16 @@ class SoftMaxModule(object):
         #######################
         # PUT YOUR CODE HERE  #
         #######################
+        # Expand dimensions to prepare for the element-wise operations for the entire batch
+        s = self.out[..., np.newaxis]  # (batch_size, num_classes, 1)
 
+        # Compute the Jacobian
+        jacobian = s * (
+            np.eye(s.shape[1]) - s.transpose(0, 2, 1)
+        )  # (batch_size, num_classes, num_classes)
+
+        # Compute dx by matrix-multiplying the Jacobian with dout
+        dx = np.einsum("bij,bj->bi", jacobian, dout)
         #######################
         # END OF YOUR CODE    #
         #######################
@@ -265,7 +285,7 @@ class SoftMaxModule(object):
         #######################
         # PUT YOUR CODE HERE  #
         #######################
-        pass
+        self.out = None
         #######################
         # END OF YOUR CODE    #
         #######################
@@ -292,7 +312,12 @@ class CrossEntropyModule(object):
         #######################
         # PUT YOUR CODE HERE  #
         #######################
-
+        # Clip values to avoid log(0) for numerical stability
+        x_clipped = np.clip(x, 1e-15, 1 - 1e-15)
+        num_classes = x_clipped.shape[1]
+        y_one_hot = np.eye(num_classes)[y]
+        # Compute cross-entropy loss
+        out = -np.sum(y_one_hot * np.log(x_clipped)) / x.shape[0]
         #######################
         # END OF YOUR CODE    #
         #######################
@@ -315,7 +340,13 @@ class CrossEntropyModule(object):
         #######################
         # PUT YOUR CODE HERE  #
         #######################
-
+        # Clip values to avoid division by zero
+        x_clipped = np.clip(x, 1e-15, 1 - 1e-15)
+        num_classes = x_clipped.shape[1]
+        y_one_hot = np.eye(num_classes)[y]
+        # Compute gradient of the loss with respect to x
+        dx = -y_one_hot / x_clipped
+        dx = dx / x.shape[0]  # Average over batch
         #######################
         # END OF YOUR CODE    #
         #######################
