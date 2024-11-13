@@ -83,18 +83,15 @@ def evaluate_model(model, data_loader):
     #######################
     # PUT YOUR CODE HERE  #
     #######################
-    # Test the best model on the test dataset
     predictions = []
     targets = []
 
     for x_test, y_test in data_loader:
-        # print("test shapes", x_test.shape, y_test.shape)
         x_test = x_test.reshape(x_test.shape[0], -1)
         logits_test = model.forward(x_test)
         predictions.append(logits_test)
         targets.append(y_test)
 
-    # Calculate test accuracy
     predictions = np.vstack(predictions)
     targets = np.hstack(targets)
     avg_accuracy = accuracy(predictions, targets)
@@ -156,7 +153,7 @@ def train(hidden_dims, lr, batch_size, epochs, seed, data_dir):
 
     # TODO: Initialize model and loss module
     n_inputs = 32 * 32 * 3  # CIFAR-10 image dimensions (32x32 RGB)
-    n_classes = 10  # CIFAR-10 has 10 classes
+    n_classes = 10  # 10 classes
     model = MLP(n_inputs=n_inputs, n_hidden=hidden_dims, n_classes=n_classes)
     loss_module = CrossEntropyModule()
 
@@ -172,19 +169,19 @@ def train(hidden_dims, lr, batch_size, epochs, seed, data_dir):
         all_predictions = []
         all_targets = []
 
-        # Training loop
+        # training loop
         for x_batch, y_batch in tqdm(
             train_loader, desc=f"Training Epoch {epoch+1}/{epochs}"
         ):
-            # Flatten input images for MLP
+            # flatten input images for MLP
             x_batch = x_batch.reshape(x_batch.shape[0], -1)
 
-            # Forward pass
+            # forward pass
             logits = model.forward(x_batch)
             loss = loss_module.forward(logits, y_batch)
             epoch_loss += loss
 
-            # Backward pass
+            # backward pass
             dout = loss_module.backward(logits, y_batch)
             model.backward(dout)
 
@@ -197,7 +194,7 @@ def train(hidden_dims, lr, batch_size, epochs, seed, data_dir):
             all_predictions.append(logits)
             all_targets.append(y_batch)
 
-        # Calculate and log epoch training loss and accuracy
+        # calculate and log epoch training loss and accuracy
         all_predictions = np.vstack(all_predictions)
         all_targets = np.hstack(all_targets)
         train_accuracy = accuracy(all_predictions, all_targets)
@@ -207,7 +204,7 @@ def train(hidden_dims, lr, batch_size, epochs, seed, data_dir):
             f"Epoch {epoch+1}/{epochs}, Training Loss: {epoch_loss / len(train_loader):.4f}, Training Accuracy: {train_accuracy:.4f}"
         )
 
-        # Validation loop
+        # validation loop
         val_loss = 0.0
         val_predictions = []
         val_targets = []
@@ -215,12 +212,11 @@ def train(hidden_dims, lr, batch_size, epochs, seed, data_dir):
         for x_val, y_val in val_loader:
             x_val = x_val.reshape(x_val.shape[0], -1)
             logits_val = model.forward(x_val)
-            # y_val_one_hot = np.eye(n_classes)[y_val]
             val_loss += loss_module.forward(logits_val, y_val)
             val_predictions.append(logits_val)
             val_targets.append(y_val)
 
-        # Calculate validation accuracy for the epoch
+        # calculate validation accuracy for the epoch
         val_predictions = np.vstack(val_predictions)
         val_targets = np.hstack(val_targets)
         val_accuracy = accuracy(val_predictions, val_targets)
@@ -231,7 +227,7 @@ def train(hidden_dims, lr, batch_size, epochs, seed, data_dir):
             f"Epoch {epoch+1}/{epochs}, Validation Loss: {val_loss / len(val_loader):.4f}, Validation Accuracy: {val_accuracy:.4f}"
         )
 
-        # Check if the model is the best so far
+        # check if the model is the best so far
         if val_accuracy > best_val_accuracy:
             best_val_accuracy = val_accuracy
             best_model = deepcopy(model)
@@ -291,23 +287,12 @@ if __name__ == "__main__":
     plt.plot(
         range(1, len(val_accuracies) + 1), val_accuracies, label="Validation Accuracy"
     )
-    plt.axhline(y=test_accuracy, color="r", linestyle="--", label="Test Accuracy")
-    plt.scatter(len(val_accuracies), test_accuracy, color="red")
-    plt.text(
-        len(val_accuracies),
-        test_accuracy,
-        f"{test_accuracy:.4f}",
-        fontsize=12,
-        color="red",
-        verticalalignment="bottom",
-        horizontalalignment="right",
-    )
     plt.xlabel("Epoch")
     plt.ylabel("Accuracy")
-    plt.title("Validation and Test Accuracies")
+    plt.title("Validation Accuracies")
     plt.legend()
     plt.grid(True)
-    plt.savefig("accuracies_plot.png")
+    plt.savefig("val_accuracies_plot.png")
     plt.show()
 
     plt.figure(figsize=(10, 5))

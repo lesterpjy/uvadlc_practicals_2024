@@ -230,12 +230,10 @@ class SoftMaxModule(object):
         #######################
         # PUT YOUR CODE HERE  #
         #######################
-        # Max Trick for numerical stability
+        # max trick
         x_shifted = x - np.max(x, axis=1, keepdims=True)
         exp_x = np.exp(x_shifted)
         out = exp_x / np.sum(exp_x, axis=1, keepdims=True)
-
-        # Cache the output for use in the backward pass
         self.out = out
         #######################
         # END OF YOUR CODE    #
@@ -258,15 +256,10 @@ class SoftMaxModule(object):
         #######################
         # PUT YOUR CODE HERE  #
         #######################
-        # Expand dimensions to prepare for the element-wise operations for the entire batch
-        s = self.out[..., np.newaxis]  # (batch_size, num_classes, 1)
-
-        # Compute the Jacobian
+        s = self.out[..., np.newaxis]
         jacobian = s * (
             np.eye(s.shape[1]) - s.transpose(0, 2, 1)
         )  # (batch_size, num_classes, num_classes)
-
-        # Compute dx by matrix-multiplying the Jacobian with dout
         dx = np.einsum("bij,bj->bi", jacobian, dout)
         #######################
         # END OF YOUR CODE    #
@@ -312,11 +305,10 @@ class CrossEntropyModule(object):
         #######################
         # PUT YOUR CODE HERE  #
         #######################
-        # Clip values to avoid log(0) for numerical stability
         x_clipped = np.clip(x, 1e-15, 1 - 1e-15)
         num_classes = x_clipped.shape[1]
         y_one_hot = np.eye(num_classes)[y]
-        # Compute cross-entropy loss
+        # cross-entropy loss
         out = -np.sum(y_one_hot * np.log(x_clipped)) / x.shape[0]
         #######################
         # END OF YOUR CODE    #
@@ -340,13 +332,11 @@ class CrossEntropyModule(object):
         #######################
         # PUT YOUR CODE HERE  #
         #######################
-        # Clip values to avoid division by zero
         x_clipped = np.clip(x, 1e-15, 1 - 1e-15)
         num_classes = x_clipped.shape[1]
         y_one_hot = np.eye(num_classes)[y]
-        # Compute gradient of the loss with respect to x
         dx = -y_one_hot / x_clipped
-        dx = dx / x.shape[0]  # Average over batch
+        dx = dx / x.shape[0]
         #######################
         # END OF YOUR CODE    #
         #######################

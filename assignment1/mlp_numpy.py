@@ -55,13 +55,11 @@ class MLP(object):
         self.layers = []
         input_dim = n_inputs
 
-        # Initialize linear layers and ELU activations for each hidden layer
         for hidden_units in n_hidden:
             self.layers.append(LinearModule(input_dim, hidden_units))
-            self.layers.append(ELUModule(alpha=1.0))  # Assuming alpha=1 for ELU
+            self.layers.append(ELUModule(alpha=1.0))
             input_dim = hidden_units
 
-        # Final layer for classification
         self.layers.append(LinearModule(input_dim, n_classes))
         self.layers.append(SoftMaxModule())
         #######################

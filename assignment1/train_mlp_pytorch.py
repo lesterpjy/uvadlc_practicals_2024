@@ -86,23 +86,22 @@ def evaluate_model(model, data_loader):
     #######################
     # PUT YOUR CODE HERE  #
     #######################
-    # Test the best model on the test dataset
     device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
     model.eval()
     correct = 0
     total = 0
 
-    with torch.no_grad():  # Disables gradient computation for inference
+    with torch.no_grad():
         for x_test, y_test in data_loader:
             x_test = x_test.reshape(x_test.size(0), -1).to(device)
             y_test = y_test.to(device)
 
             logits_test = model(x_test)
-            _, predicted = torch.max(logits_test, 1)  # Get the predicted class
+            _, predicted = torch.max(logits_test, 1)
             correct += (predicted == y_test).sum().item()
             total += y_test.size(0)
 
-    avg_accuracy = correct / total  # Compute overall accuracy
+    avg_accuracy = correct / total
     #######################
     # END OF YOUR CODE    #
     #######################
@@ -169,8 +168,8 @@ def train(hidden_dims, lr, use_batch_norm, batch_size, epochs, seed, data_dir):
     test_loader = cifar10_loader["test"]
 
     # TODO: Initialize model and loss module
-    n_inputs = 32 * 32 * 3  # CIFAR-10 image dimensions (32x32 RGB)
-    n_classes = 10  # CIFAR-10 has 10 classes
+    n_inputs = 32 * 32 * 3
+    n_classes = 10
     model = MLP(
         n_inputs=n_inputs,
         n_hidden=hidden_dims,
@@ -192,21 +191,18 @@ def train(hidden_dims, lr, use_batch_norm, batch_size, epochs, seed, data_dir):
         correct_train = 0
         total_train = 0
 
-        # Training loop
+        # training loop
         for x_batch, y_batch in tqdm(
             train_loader, desc=f"Training Epoch {epoch+1}/{epochs}"
         ):
-            # Flatten input images for MLP
+            # flatten input images for MLP
             x_batch = x_batch.reshape(x_batch.shape[0], -1).to(device)
             y_batch = y_batch.to(device)
 
             optimizer.zero_grad()
-            # Make predictions for this batch
             logits = model(x_batch)
-            # Compute the loss and its gradients
             loss = loss_module(logits, y_batch)
             loss.backward()
-            # Adjust learning weights
             optimizer.step()
 
             epoch_loss += loss.item()
@@ -246,12 +242,10 @@ def train(hidden_dims, lr, use_batch_norm, batch_size, epochs, seed, data_dir):
         val_accuracies.append(val_accuracy)
         logging_dict["val_loss"].append(avg_val_loss)
         logging_dict["val_accuracy"].append(val_accuracy)
-
         print(
             f"Epoch {epoch+1}/{epochs}, Validation Loss: {avg_val_loss:.4f}, Validation Accuracy: {val_accuracy:.4f}"
         )
 
-        # Check if the model is the best so far
         if val_accuracy > best_val_accuracy:
             best_val_accuracy = val_accuracy
             best_model = deepcopy(model)
@@ -315,20 +309,9 @@ if __name__ == "__main__":
     plt.plot(
         range(1, len(val_accuracies) + 1), val_accuracies, label="Validation Accuracy"
     )
-    plt.axhline(y=test_accuracy, color="r", linestyle="--", label="Test Accuracy")
-    plt.scatter(len(val_accuracies), test_accuracy, color="red")
-    plt.text(
-        len(val_accuracies),
-        test_accuracy,
-        f"{test_accuracy:.4f}",
-        fontsize=12,
-        color="red",
-        verticalalignment="bottom",
-        horizontalalignment="right",
-    )
     plt.xlabel("Epoch")
     plt.ylabel("Accuracy")
-    plt.title("Validation and Test Accuracies (Pytorch)")
+    plt.title("Validation accuracies (Pytorch with batch norm)")
     plt.legend()
     plt.grid(True)
     plt.savefig("accuracies_plot_pytorch_bn.png")
@@ -347,7 +330,7 @@ if __name__ == "__main__":
     )
     plt.xlabel("Epoch")
     plt.ylabel("Loss")
-    plt.title("Training and Validation Loss (Pytorch)")
+    plt.title("Training and Validation Loss (Pytorch with batch norm)")
     plt.legend()
     plt.grid(True)
     plt.savefig("loss_plot_pytorch_bn.png")
