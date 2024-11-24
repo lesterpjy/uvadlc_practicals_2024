@@ -6,6 +6,7 @@ Experiment with different convolution types
 
 import torch
 import numpy as np
+
 np.random.seed(42)  # for reproducibility
 torch.backends.cudnn.deterministic = True
 torch.manual_seed(42)
@@ -19,61 +20,86 @@ from torch.autograd import Variable
 import argparse
 from utils import gen_box_data, gen_box_data_test
 
+
 class Net(nn.Module):
-    '''
+    """
     Create network with 4 Conv layers
-    '''
+    """
+
     def __init__(self, conv_type, net_type):
         super(Net, self).__init__()
         self.net_type = net_type
-        if conv_type == 'fconv':
-            pad_type = 'zeros'
+        if conv_type == "fconv":
+            pad_type = "zeros"
             padding_size = 2
             fc2_inp_dim = 64 * 6 * 6
 
-        elif conv_type == 'sconv':
-            pad_type = 'zeros'
+        elif conv_type == "sconv":
+            pad_type = "zeros"
             padding_size = 1
             fc2_inp_dim = 64 * 4 * 4
 
-        elif conv_type == 'circular':
-            pad_type = 'circular'
+        elif conv_type == "circular":
+            pad_type = "circular"
             padding_size = 2
             fc2_inp_dim = 64 * 6 * 6
 
-        elif conv_type == 'reflect':
-            pad_type = 'reflect'
+        elif conv_type == "reflect":
+            pad_type = "reflect"
             padding_size = 2
             fc2_inp_dim = 64 * 6 * 6
 
-        elif conv_type == 'replicate':
-            pad_type = 'replicate'
+        elif conv_type == "replicate":
+            pad_type = "replicate"
             padding_size = 2
             fc2_inp_dim = 64 * 6 * 6
 
-        elif conv_type == 'valid':
-            pad_type = 'zeros'
+        elif conv_type == "valid":
+            pad_type = "zeros"
             padding_size = 0
             fc2_inp_dim = 64 * 2 * 2
 
-        self.conv1 = nn.Conv2d(3, 32, kernel_size=3, stride=1,
-                               padding=padding_size, bias=False,
-                               padding_mode=pad_type)
-        self.conv2 = nn.Conv2d(32, 32, kernel_size=3, stride=2,
-                               padding=padding_size, bias=False,
-                               padding_mode=pad_type)
-        self.conv3 = nn.Conv2d(32, 64, kernel_size=3, stride=2,
-                               padding=padding_size, bias=False,
-                               padding_mode=pad_type)
-        self.conv4 = nn.Conv2d(64, 64, kernel_size=3, stride=2,
-                               padding=padding_size, bias=False,
-                               padding_mode=pad_type)
+        self.conv1 = nn.Conv2d(
+            3,
+            32,
+            kernel_size=3,
+            stride=1,
+            padding=padding_size,
+            bias=False,
+            padding_mode=pad_type,
+        )
+        self.conv2 = nn.Conv2d(
+            32,
+            32,
+            kernel_size=3,
+            stride=2,
+            padding=padding_size,
+            bias=False,
+            padding_mode=pad_type,
+        )
+        self.conv3 = nn.Conv2d(
+            32,
+            64,
+            kernel_size=3,
+            stride=2,
+            padding=padding_size,
+            bias=False,
+            padding_mode=pad_type,
+        )
+        self.conv4 = nn.Conv2d(
+            64,
+            64,
+            kernel_size=3,
+            stride=2,
+            padding=padding_size,
+            bias=False,
+            padding_mode=pad_type,
+        )
         self.fc1 = nn.Linear(64 * 1 * 1, 2)
-        if self.net_type == 'Net1':
+        if self.net_type == "Net1":
             self.adap_max = nn.AdaptiveMaxPool2d(1)
-        elif self.net_type == 'Net2':
+        elif self.net_type == "Net2":
             self.fc2 = nn.Linear(fc2_inp_dim, 64 * 1 * 1)
-        
 
     def forward(self, x):
 
@@ -81,11 +107,12 @@ class Net(nn.Module):
         x = F.relu(self.conv2(x))
         x = F.relu(self.conv3(x))
         x = F.relu(self.conv4(x))
-        
-        if self.net_type == 'Net1':
+        print("shape after convs:", x.shape)
+        if self.net_type == "Net1":
             x = self.adap_max(x)
-        elif self.net_type == 'Net2':
+        elif self.net_type == "Net2":
             x = torch.flatten(x, start_dim=1)
+            print("after flatten", x.shape)
             x = self.fc2(x)
         else:
             raise NotImplementedError
@@ -93,59 +120,102 @@ class Net(nn.Module):
         x = self.fc1(x)
         return x
 
-if __name__ == '__main__':
+
+if __name__ == "__main__":
     parser = argparse.ArgumentParser()
-    parser.add_argument("--train_size", type=int, default=2000, help="training set size")
-    parser.add_argument("--val_size", type=int, default=1000, help="validation set size")
+    parser.add_argument(
+        "--train_size", type=int, default=2000, help="training set size"
+    )
+    parser.add_argument(
+        "--val_size", type=int, default=1000, help="validation set size"
+    )
     parser.add_argument("--test_size", type=int, default=1000, help="test set size")
-    parser.add_argument("--conv_type", type=str, default='fconv',
-                        help="please choose convolution type from 'valid', 'sconv','fconv','circular', 'reflect', 'replicate'")
-    parser.add_argument("--net_type", type=str, default='Net1', help="please choose network type from 'Net1' and 'Net2'")
-    parser.add_argument("--image_size", type=int, default=32, help="spatial size of sample image")
+    parser.add_argument(
+        "--conv_type",
+        type=str,
+        default="fconv",
+        help="please choose convolution type from 'valid', 'sconv','fconv','circular', 'reflect', 'replicate'",
+    )
+    parser.add_argument(
+        "--net_type",
+        type=str,
+        default="Net1",
+        help="please choose network type from 'Net1' and 'Net2'",
+    )
+    parser.add_argument(
+        "--image_size", type=int, default=32, help="spatial size of sample image"
+    )
     parser.add_argument("--offset1", type=int, default=7, help="offset for class-1")
     parser.add_argument("--offset2", type=int, default=23, help="offset for class-2")
-    parser.add_argument("--fluctuation", type=int, default=6, 
-                        help="paramater for location fluctuation on the y-axis")
-    parser.add_argument("--n_repeat", type=int, default=10,
-                        help="training the network with n different initializations")
+    parser.add_argument(
+        "--fluctuation",
+        type=int,
+        default=6,
+        help="paramater for location fluctuation on the y-axis",
+    )
+    parser.add_argument(
+        "--n_repeat",
+        type=int,
+        default=10,
+        help="training the network with n different initializations",
+    )
     parser.add_argument("--epochs", type=int, default=50, help="number of epochs")
-    parser.add_argument("--batch_size", type=int, default=200, help="size of each image batch")
+    parser.add_argument(
+        "--batch_size", type=int, default=200, help="size of each image batch"
+    )
 
     opt = parser.parse_args()
     print(opt)
 
     use_gpu = torch.cuda.is_available()
-    net_model = 'net_model_wts.pth'
+    net_model = "net_model_wts.pth"
     conv_type = opt.conv_type
     net_type = opt.net_type
     batch_size = opt.batch_size
 
-    #******************************************************************#
+    # ******************************************************************#
     ###******************* DATASET GENERATION ***********************###
-    #******************************************************************#
+    # ******************************************************************#
 
-    trainset = np.zeros([opt.train_size, 3, opt.image_size, opt.image_size], dtype=float)
+    trainset = np.zeros(
+        [opt.train_size, 3, opt.image_size, opt.image_size], dtype=float
+    )
     y_train = np.zeros(opt.train_size)
     valset = np.zeros([opt.val_size, 3, opt.image_size, opt.image_size], dtype=float)
     y_val = np.zeros(opt.val_size)
     testset = np.zeros([opt.test_size, 3, opt.image_size, opt.image_size], dtype=float)
     y_test = np.zeros(opt.test_size)
 
-    trainset, y_train = gen_box_data(trainset, y_train,
-                                    length=opt.train_size, image_size=opt.image_size,
-                                    offset1=opt.offset1, offset2=opt.offset2,
-                                    shiftdiv=opt.fluctuation)
-    valset, y_val = gen_box_data(valset, y_val,
-                                length=opt.val_size, image_size=opt.image_size,
-                                offset1=opt.offset1, offset2=opt.offset2,
-                                shiftdiv=opt.fluctuation)
+    trainset, y_train = gen_box_data(
+        trainset,
+        y_train,
+        length=opt.train_size,
+        image_size=opt.image_size,
+        offset1=opt.offset1,
+        offset2=opt.offset2,
+        shiftdiv=opt.fluctuation,
+    )
+    valset, y_val = gen_box_data(
+        valset,
+        y_val,
+        length=opt.val_size,
+        image_size=opt.image_size,
+        offset1=opt.offset1,
+        offset2=opt.offset2,
+        shiftdiv=opt.fluctuation,
+    )
 
-    testset1, y_test1, testset2, y_test2 = gen_box_data_test(testset, y_test,
-                                                            testset.copy(), y_test.copy(),
-                                                            length=opt.test_size,
-                                                            image_size=opt.image_size, 
-                                                            offset1=opt.offset1, offset2=opt.offset2, 
-                                                            shiftdiv=opt.fluctuation)
+    testset1, y_test1, testset2, y_test2 = gen_box_data_test(
+        testset,
+        y_test,
+        testset.copy(),
+        y_test.copy(),
+        length=opt.test_size,
+        image_size=opt.image_size,
+        offset1=opt.offset1,
+        offset2=opt.offset2,
+        shiftdiv=opt.fluctuation,
+    )
 
     # from numpy to torch tensor
 
@@ -180,11 +250,11 @@ if __name__ == '__main__':
 
     for m in range(opt.n_repeat):
 
-        print('Round  :{:4d}'.format(m + 1))
+        print("Round  :{:4d}".format(m + 1))
 
-        #******************************************************************#
+        # ******************************************************************#
         ###****************** MODEL INITIALISATION **********************###
-        #******************************************************************#
+        # ******************************************************************#
 
         torch.manual_seed(m)
         net = Net(conv_type=conv_type, net_type=net_type)
@@ -199,20 +269,25 @@ if __name__ == '__main__':
             buffer_size += buffer.nelement() * buffer.element_size()
 
         size_all_kb = (param_size + buffer_size) / 1024
-        print('Model size: {:.3f}KB'.format(size_all_kb))
+        print("Model size: {:.3f}KB".format(size_all_kb))
 
-        #******************************************************************#
+        # ******************************************************************#
         ###******************** TRAINING/TESTING ************************###
-        #******************************************************************#
+        # ******************************************************************#
 
-        ''' Loss functions and optimizer '''
+        """ Loss functions and optimizer """
         criterion_class = nn.CrossEntropyLoss()
-        optimizer = optim.Adadelta([{'params': net.parameters()}], lr=1.0, rho=0.9,
-                                    eps=1e-06, weight_decay=0.00005)
+        optimizer = optim.Adadelta(
+            [{"params": net.parameters()}],
+            lr=1.0,
+            rho=0.9,
+            eps=1e-06,
+            weight_decay=0.00005,
+        )
 
         # Training
 
-        print('Training is starting...')
+        print("Training is starting...")
         net.train()
         best = 50.0
         patience = 0
@@ -253,8 +328,8 @@ if __name__ == '__main__':
 
                 epoch_loss = train_loss / (counter)
                 epoch_acc = train_corrects.item() / (total)
-                print('Epoch:{:4d}'.format(epoch + 1))
-                print('Loss: {:.4f} Acc: {:.4f}'.format(epoch_loss, epoch_acc))
+                print("Epoch:{:4d}".format(epoch + 1))
+                print("Loss: {:.4f} Acc: {:.4f}".format(epoch_loss, epoch_acc))
 
                 # Validation
 
@@ -282,10 +357,10 @@ if __name__ == '__main__':
                     correct += torch.sum(predicted == label_class)
 
                 val_loss /= total
-                print('val loss: ', val_loss)
+                print("val loss: ", val_loss)
                 val_acc = 100 * correct.item() / (total)
-                print('Accuracy of the network on the val images: %.4f %%' % (val_acc))
-                
+                print("Accuracy of the network on the val images: %.4f %%" % (val_acc))
+
                 results_val[m] = val_acc
 
                 if best > val_loss:
@@ -296,15 +371,15 @@ if __name__ == '__main__':
 
                 elif patience < 8:
                     patience += 1
-                    print('patience', patience)
+                    print("patience", patience)
 
                 elif patience >= 8:
                     flag = False
 
-        print('Training finished.')
+        print("Training finished.")
 
         #  -------------------------------------------------
-        # Testing 
+        # Testing
         net.load_state_dict(torch.load(net_model))  # using best model
 
         net.eval()
@@ -333,16 +408,16 @@ if __name__ == '__main__':
 
         testing_loss /= total
         acc = 100 * correct.item() / (total)
-        print('testing loss: ', testing_loss)
-        print('Accuracy of the network on the testset images: %.4f %%' % (acc))
+        print("testing loss: ", testing_loss)
+        print("Accuracy of the network on the testset images: %.4f %%" % (acc))
 
         results_test[m] = acc
-        print('Testing with testset finished')
+        print("Testing with testset finished")
 
-    acc_val = np.zeros(m+1)
-    acc_test = np.zeros(m+1)
+    acc_val = np.zeros(m + 1)
+    acc_test = np.zeros(m + 1)
 
-    for i in range(m+1):
+    for i in range(m + 1):
 
         acc_val[i] = results_val[i]
         acc_test[i] = results_test[i]
@@ -356,7 +431,7 @@ if __name__ == '__main__':
     print(" Type of convolution : ", conv_type)
     print(" Type of network : ", net_type)
     print("*******************************************")
-    print('Results for validation dataset', results_val)
-    print('mean: {:.4f} std: {:.4f} for validation'.format(mean_val, std_val))
-    print('Results for test dataset', results_test)
-    print('mean: {:.4f} std: {:.4f} for test'.format(mean_test, std_test))
+    print("Results for validation dataset", results_val)
+    print("mean: {:.4f} std: {:.4f} for validation".format(mean_val, std_val))
+    print("Results for test dataset", results_test)
+    print("mean: {:.4f} std: {:.4f} for test".format(mean_test, std_test))
