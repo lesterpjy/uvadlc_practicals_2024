@@ -139,7 +139,6 @@ if __name__ == "__main__":
     gpt_model = GPT(cfg)
 
     # Setup dataset and model
-    print("txt_file loc:", args.txt_file)
     dataset = TextDataset(args, args.txt_file, args.block_size, CharTokenizer)
     model = GPTLightningModule(cfg, gpt_model, dataset)
     model.load_state_dict(state_dict["state_dict"])
