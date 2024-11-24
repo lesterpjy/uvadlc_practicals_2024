@@ -113,6 +113,9 @@ class CausalSelfAttention(nn.Module):
         # Frequency for RoPE
         dim = config.n_embd // config.n_head
         self.inv_freq = 1.0 / (10000 ** (torch.arange(0, dim, 2).float() / dim))
+        self.register_buffer(
+            "inv_freq", self.inv_freq
+        )  # added line: register for moving to device
 
         self.config = config
         self.debug = debug
