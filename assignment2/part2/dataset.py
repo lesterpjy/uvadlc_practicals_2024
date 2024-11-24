@@ -3,6 +3,7 @@ from typing import Any
 
 import torch
 from torch.utils.data import Dataset
+import os
 
 
 class CharTokenizer:
@@ -78,6 +79,7 @@ class TextDataset(Dataset):
         # Load text data
         # With BIG datasets, NEVER do this, unless you happen to have terrabytes of RAM.
         # The typical way to do this with big datasets is to pre-tokenize and save the tokenized files, then lazily load as needed.
+        print("current working directory:", os.getcwd())
         print("txt_file loc:", datafile_path)
         with open(datafile_path, "r") as file:
             data = file.read()
