@@ -1,0 +1,225 @@
+============================================================================================== 
+Warning! Mixing Conda and module environments may lead to corruption of the
+user environment. 
+We do not recommend users mixing those two environments unless absolutely
+necessary. Note that 
+SURF does not provide any support for Conda environment.
+For more information, please refer to our software policy page:
+https://servicedesk.surf.nl/wiki/display/WIKI/Software+policy+Snellius#SoftwarepolicySnellius-UseofAnacondaandMinicondaenvironmentsonSnellius 
+
+Remember that many packages have already been installed on the system and can
+be loaded using 
+the 'module load <package__name>' command. If you are uncertain if a package is
+already available 
+on the system, please use 'module avail' or 'module spider' to search for it.
+============================================================================================== 
+[rank: 0] Seed set to 0
+/gpfs/home5/scur2818/uvadlc_practicals_2024/assignment2/part2/generate.py:116: FutureWarning: You are using `torch.load` with `weights_only=False` (the current default value), which uses the default pickle module implicitly. It is possible to construct malicious pickle data which will execute arbitrary code during unpickling (See https://github.com/pytorch/pytorch/blob/main/SECURITY.md#untrusted-models for more details). In a future release, the default value for `weights_only` will be flipped to `True`. This limits the functions that could be executed during unpickling. Arbitrary objects will no longer be allowed to be loaded via this mode unless they are explicitly allowlisted by the user via `torch.serialization.add_safe_globals`. We recommend you start setting `weights_only=True` for any use case where you don't have full control of the loaded file. Please open an issue on GitHub for any issues related to this experimental feature.
+  state_dict = torch.load(model_weights_path)
+True False
+number of parameters: 10.73M
+data has 540241 characters, 87 unique.
+current working directory: /gpfs/home5/scur2818/uvadlc_practicals_2024/assignment2/part2
+txt_file loc: ./assets/book_EN_grimms_fairy_tales.txt
+running on device cpu
+Prompt: Yesterday, I went to the store and bought some 
+
+
+--------------------------------------------------------------------------------
+Yesterday, I went to the store and bought some of the wood to catch with out
+poor bed, the door opened, and a dog man laid t
+--------------------------------------------------------------------------------
+Yesterday, I went to the store and bought some wood. Then the fox
+came, and said, ‘Pray kill me, and cut off my head and my 
+--------------------------------------------------------------------------------
+Yesterday, I went to the store and bought some lodging to carry it up; but on the way shell the tree, and the apples came fl
+--------------------------------------------------------------------------------
+Yesterday, I went to the store and bought some to the young lady,
+saying, ‘I bring you the dish myself that you may not wait
+--------------------------------------------------------------------------------
+Yesterday, I went to the store and bought some wood that this rang one feached, and so
+seate him again, and the tailor was t
+
+
+--------------------------------------------------------------------------------
+Prompt: She locked the door before leaving the house because she didnt want anyone to 
+
+
+--------------------------------------------------------------------------------
+She locked the door before leaving the house because she didnt want anyone to get away, and the
+kingdom was once more in peace but full of cold water
+where
+--------------------------------------------------------------------------------
+She locked the door before leaving the house because she didnt want anyone to the
+well, and offer you will. If you desire nothing more than the little gran
+--------------------------------------------------------------------------------
+She locked the door before leaving the house because she didnt want anyone to feed.’
+
+The miller saw the peasant lying on the truth-till, and there the old
+--------------------------------------------------------------------------------
+She locked the door before leaving the house because she didnt want anyone to go. However, she gave him a
+little boy, and said to him, ‘You must be a witch
+--------------------------------------------------------------------------------
+She locked the door before leaving the house because she didnt want anyone to thee, and when she went to
+death. He said to her: ‘Lord, I will give you a pi
+
+
+--------------------------------------------------------------------------------
+Prompt: Once upon a time, in a land where the sun never set, there was a magical forest filled with 
+
+
+--------------------------------------------------------------------------------
+Once upon a time, in a land where the sun never set, there was a magical forest filled with the wand,
+and it will be a sin and a sausage made it was so beautiful that th
+--------------------------------------------------------------------------------
+Once upon a time, in a land where the sun never set, there was a magical forest filled with rage;
+but the heat of the second time it into the carriage into the city, Cha
+--------------------------------------------------------------------------------
+Once upon a time, in a land where the sun never set, there was a magical forest filled with his mother’s
+village. But the herch grew into the cottage, and the half of wh
+--------------------------------------------------------------------------------
+Once upon a time, in a land where the sun never set, there was a magical forest filled with fancies, that’s because
+you do not go out in the daytion, for the dog yet unt
+--------------------------------------------------------------------------------
+Once upon a time, in a land where the sun never set, there was a magical forest filled with the water.
+
+After that the peasants went into the town, and was almost blinde
+
+
+--------------------------------------------------------------------------------
+Prompt: The king observed the phenomenon with a sense of quixotic wonder, noting that it both anomalous and 
+
+
+--------------------------------------------------------------------------------
+The king observed the phenomenon with a sense of quixotic wonder, noting that it both anomalous and sang:
+
+ ‘Shake, shake, hazel-tree,
+  Gold and silver over me!’
+
+And the bird 
+--------------------------------------------------------------------------------
+The king observed the phenomenon with a sense of quixotic wonder, noting that it both anomalous and fine hours to be placed
+where he sat as sweetly as he could: ‘Do you know wha
+--------------------------------------------------------------------------------
+The king observed the phenomenon with a sense of quixotic wonder, noting that it both anomalous and ask to it
+as usual:
+
+ ‘Thou, queen, art fair, and beauteous to see,
+  But Sno
+--------------------------------------------------------------------------------
+The king observed the phenomenon with a sense of quixotic wonder, noting that it both anomalous and asked for a lodging; ‘I
+am a wood, and I will light a fire that you may not w
+--------------------------------------------------------------------------------
+The king observed the phenomenon with a sense of quixotic wonder, noting that it both anomalous and knife
+upon the time asked for his bride; but the king again
+sought a way out,
+
+
+--------------------------------------------------------------------------------
+Prompt: The scientist observed the phenomenon with a sense of quixotic wonder, noting that it both anomalous and 
+
+
+--------------------------------------------------------------------------------
+The scientist observed the phenomenon with a sense of quixotic wonder, noting that it both anomalous and kill his best off wild and spend him out of the same spindle
+on the ground.
+
+
+--------------------------------------------------------------------------------
+The scientist observed the phenomenon with a sense of quixotic wonder, noting that it both anomalous and ressed it was
+companeding the nuts afterwards, as if erode that the branches 
+--------------------------------------------------------------------------------
+The scientist observed the phenomenon with a sense of quixotic wonder, noting that it both anomalous and asked: ‘Who is the
+torn-upon the street till the blood ran.’ The gardener was
+--------------------------------------------------------------------------------
+The scientist observed the phenomenon with a sense of quixotic wonder, noting that it both anomalous and sensult, though went the
+flock home should be bournt up in a little clothes, 
+--------------------------------------------------------------------------------
+The scientist observed the phenomenon with a sense of quixotic wonder, noting that it both anomalous and many
+meny thoughtful.’ ‘Just let us learn in the morning,’ said she. ‘Then
+ev
+
+
+--------------------------------------------------------------------------------
+Prompt: The chicken is ready to eat. We set the table and 
+
+
+--------------------------------------------------------------------------------
+The chicken is ready to eat. We set the table and down the door
+was a wicket, so that they could look into the next room; and h
+--------------------------------------------------------------------------------
+The chicken is ready to eat. We set the table and cut her in
+all the land. Nothing was hidden from him, and he was so young and
+--------------------------------------------------------------------------------
+The chicken is ready to eat. We set the table and be all,
+asked the boy was at the top of
+the tower. The little tailor called t
+--------------------------------------------------------------------------------
+The chicken is ready to eat. We set the table and cut her beautiful body into
+pieces, and sprinkled salt upon it.
+
+The poor bet
+--------------------------------------------------------------------------------
+The chicken is ready to eat. We set the table and be well
+come in.’ So they brother warmed his hand and
+laid it away out of the
+
+
+--------------------------------------------------------------------------------
+Prompt: Sarah gave her sister a gift because she wanted to make her happy. She was thrilled with the 
+
+
+--------------------------------------------------------------------------------
+Sarah gave her sister a gift because she wanted to make her happy. She was thrilled with the youngest and
+the best of the king’s three daughters. Now they were all beauti
+--------------------------------------------------------------------------------
+Sarah gave her sister a gift because she wanted to make her happy. She was thrilled with the good cheer and
+ate and dranked the cinders and thinkels to the path. And
+then
+--------------------------------------------------------------------------------
+Sarah gave her sister a gift because she wanted to make her happy. She was thrilled with the juniper-tree
+to Kinger, and as the horse knocked at his door, and a little dw
+--------------------------------------------------------------------------------
+Sarah gave her sister a gift because she wanted to make her happy. She was thrilled with the jam
+over the floor trouble, and at last she was so abashed, that she
+wished h
+--------------------------------------------------------------------------------
+Sarah gave her sister a gift because she wanted to make her happy. She was thrilled with the good cheer, and
+ate and drank the wine which he had watched over his back, he
+
+
+--------------------------------------------------------------------------------
+Prompt: The kings council convened every year to discuss the welfare of the kingdom. Ten years later, the traditions remained, and the council still 
+
+
+--------------------------------------------------------------------------------
+The kings council convened every year to discuss the welfare of the kingdom. Ten years later, the traditions remained, and the council still less
+than the golden bird; and his father was brought the key. He would not g
+--------------------------------------------------------------------------------
+The kings council convened every year to discuss the welfare of the kingdom. Ten years later, the traditions remained, and the council still oved to him that she was just
+then before should be, and so he did not get ou
+--------------------------------------------------------------------------------
+The kings council convened every year to discuss the welfare of the kingdom. Ten years later, the traditions remained, and the council still only listened it,
+and there sat all the terms from under the spell of the sec
+--------------------------------------------------------------------------------
+The kings council convened every year to discuss the welfare of the kingdom. Ten years later, the traditions remained, and the council still less money to buy one, and
+yet he saw the king’s daughter drinking the ageeme
+--------------------------------------------------------------------------------
+The kings council convened every year to discuss the welfare of the kingdom. Ten years later, the traditions remained, and the council still only that once he
+could not take his eyes off him. If he was to have any rest
+
+
+--------------------------------------------------------------------------------
+
+JOB STATISTICS
+==============
+Job ID: 8675394
+Cluster: snellius
+User/Group: scur2818/scur2818
+State: COMPLETED (exit code 0)
+Nodes: 1
+Cores per node: 9
+CPU Utilized: 00:02:58
+CPU Efficiency: 52.05% of 00:05:42 core-walltime
+Job Wall-clock time: 00:00:38
+Memory Utilized: 2.06 MB
+Memory Efficiency: 0.00% of 60.00 GB
