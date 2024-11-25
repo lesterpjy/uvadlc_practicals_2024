@@ -157,17 +157,12 @@ if __name__ == "__main__":
     prompt_list = [
         (
             "Yesterday, I went to the store and bought some ",
-            0.9,
+            1.0,
             0.8,
         ),  # syntactic completion
         (
-            "In a small village surrounded by mountains, there lived a young boy named Liam. Every morning, he would ",
-            0.9,
-            0.8,
-        ),  # long range context
-        (
             "She locked the door before leaving the house because she didnt want anyone to ",
-            0.9,
+            0.8,
             0.6,
         ),  # semantic understanding
         (
@@ -176,21 +171,16 @@ if __name__ == "__main__":
             0.9,
         ),  # creativity
         (
-            "The scientist observed the phenomenon with a sense of quixotic wonder, noting that the results were both anomalous and ",
-            0.9,
+            "The king observed the phenomenon with a sense of quixotic wonder, noting that it both anomalous and ",
+            0.7,
             0.9,
         ),  # rare words
-        ("The bass was so loud that it shook the ", 0.9, 0.6),  # ambiguity
+        ("The chicken is ready to eat. We set the table and ", 0.7, 0.6),  # ambiguity
         (
             "Sarah gave her sister a gift because she wanted to make her happy. She was thrilled with the ",
             0.9,
             0.6,
         ),  # coreference resolution
-        (
-            "The detective followed the suspect into the alleyway and found a ",
-            1.0,
-            0.9,
-        ),  # suspense
         (
             "The kings council convened every year to discuss the welfare of the kingdom. Ten years later, the traditions remained, and the council still ",
             0.9,
