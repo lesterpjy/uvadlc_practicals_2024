@@ -98,7 +98,7 @@ if __name__ == "__main__":
         type=str,
         default="./logs/gpt-mini/version_0/checkpoints",
     )
-    parser.add_argument("--num_samples", type=int, default=10)
+    parser.add_argument("--num_samples", type=int, default=5)
     parser.add_argument("--num_generated_tokens", type=int, default=77)
     parser.add_argument("--do_sample", type=bool, default=True)
     parser.add_argument("--temperature", type=float, default=1.0)
@@ -154,13 +154,30 @@ if __name__ == "__main__":
 
     device = next(model.parameters()).device
 
-    generate(
-        prompt=args.prompt,
-        model=model,
-        model_type=args.model_type,
-        num_samples=args.num_samples,
-        n_steps=args.num_generated_tokens,
-        do_sample=args.do_sample,
-        temperature=args.temperature,
-        device=device,
-    )
+    prompt_list = [
+        "Yesterday, I went to the store and bought some ",  # syntactic completion
+        "In a small village surrounded by mountains, there lived a young boy named Liam. Every morning, he would ",  # long range context
+        "She locked the door before leaving the house because she didn't want anyone to",  # semantic understanding
+        "Once upon a time, in a land where the sun never set, there was a magical forest filled with",  # creativity
+        "If Emily arrives at the party before 8 PM and John is already there, they will ",  # logical reasoning
+        "The scientist observed the phenomenon with a sense of quixotic wonder, noting that the results were both anomalous and ",  # rare words
+        "The bass was so loud that it shook the ",  # ambiguity
+        "Sarah gave her sister a gift because she wanted to make her happy. She was thrilled with the",  # coreference resolution
+        "The detective followed the suspect into the alleyway and found a ",  # suspense
+        "The king's council convened every year to discuss the welfare of the kingdom. Ten years later, the traditions remained, and the council still",  # long range dependency
+    ]
+    for prompt in prompt_list:
+        print(f"Prompt: {prompt}")
+        print("\n")
+        generate(
+            prompt=prompt,
+            model=model,
+            model_type=args.model_type,
+            num_samples=args.num_samples,
+            n_steps=args.num_generated_tokens,
+            do_sample=args.do_sample,
+            temperature=args.temperature,
+            device=device,
+        )
+        print("\n")
+        print("-" * 80)
