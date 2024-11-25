@@ -175,6 +175,11 @@ if __name__ == "__main__":
             0.7,
             0.9,
         ),  # rare words
+        (
+            "The scientist observed the phenomenon with a sense of quixotic wonder, noting that it both anomalous and ",
+            0.7,
+            0.9,
+        ),  # rare words
         ("The chicken is ready to eat. We set the table and ", 0.7, 0.6),  # ambiguity
         (
             "Sarah gave her sister a gift because she wanted to make her happy. She was thrilled with the ",
