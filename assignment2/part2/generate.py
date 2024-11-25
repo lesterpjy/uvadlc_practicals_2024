@@ -138,8 +138,17 @@ if __name__ == "__main__":
     cfg = argparse.Namespace(**combined_cfg)
     gpt_model = GPT(cfg)
 
+    if args.pretrained_tokenizer:
+        import tiktoken
+
+        tokenizer = tiktoken.get_encoding("gpt2")
+        args.vocab_size = tokenizer.max_token_value
+    else:
+        tokenizer = CharTokenizer(args.txt_file)
+        args.vocab_size = tokenizer.vocab_size  # Set vocab size from tokenizer
+
     # Setup dataset and model
-    dataset = TextDataset(args, args.txt_file, args.block_size, CharTokenizer)
+    dataset = TextDataset(args, args.txt_file, args.block_size, tokenizer)
     model = GPTLightningModule(cfg, gpt_model, dataset)
     model.load_state_dict(state_dict["state_dict"])
 
