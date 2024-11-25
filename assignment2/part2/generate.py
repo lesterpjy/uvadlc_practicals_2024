@@ -155,18 +155,54 @@ if __name__ == "__main__":
     device = next(model.parameters()).device
 
     prompt_list = [
-        "Yesterday, I went to the store and bought some ",  # syntactic completion
-        "In a small village surrounded by mountains, there lived a young boy named Liam. Every morning, he would ",  # long range context
-        "She locked the door before leaving the house because she didn't want anyone to",  # semantic understanding
-        "Once upon a time, in a land where the sun never set, there was a magical forest filled with",  # creativity
-        "If Emily arrives at the party before 8 PM and John is already there, they will ",  # logical reasoning
-        "The scientist observed the phenomenon with a sense of quixotic wonder, noting that the results were both anomalous and ",  # rare words
-        "The bass was so loud that it shook the ",  # ambiguity
-        "Sarah gave her sister a gift because she wanted to make her happy. She was thrilled with the",  # coreference resolution
-        "The detective followed the suspect into the alleyway and found a ",  # suspense
-        "The king's council convened every year to discuss the welfare of the kingdom. Ten years later, the traditions remained, and the council still",  # long range dependency
+        (
+            "Yesterday, I went to the store and bought some ",
+            0.8,
+            0.8,
+        ),  # syntactic completion
+        (
+            "In a small village surrounded by mountains, there lived a young boy named Liam. Every morning, he would ",
+            0.7,
+            0.8,
+        ),  # long range context
+        (
+            "She locked the door before leaving the house because she didnt want anyone to ",
+            0.7,
+            0.6,
+        ),  # semantic understanding
+        (
+            "Once upon a time, in a land where the sun never set, there was a magical forest filled with ",
+            0.8,
+            0.9,
+        ),  # creativity
+        (
+            "If Emily arrives at the party before 8 PM and John is already there, they will ",
+            0.7,
+            0.6,
+        ),  # logical reasoning
+        (
+            "The scientist observed the phenomenon with a sense of quixotic wonder, noting that the results were both anomalous and ",
+            0.7,
+            0.9,
+        ),  # rare words
+        ("The bass was so loud that it shook the ", 0.7, 0.6),  # ambiguity
+        (
+            "Sarah gave her sister a gift because she wanted to make her happy. She was thrilled with the ",
+            0.7,
+            0.6,
+        ),  # coreference resolution
+        (
+            "The detective followed the suspect into the alleyway and found a ",
+            0.8,
+            0.9,
+        ),  # suspense
+        (
+            "The kings council convened every year to discuss the welfare of the kingdom. Ten years later, the traditions remained, and the council still ",
+            0.7,
+            0.6,
+        ),  # long range dependency
     ]
-    for prompt in prompt_list:
+    for prompt, temp, top_p in prompt_list:
         print(f"Prompt: {prompt}")
         print("\n")
         generate(
@@ -176,7 +212,8 @@ if __name__ == "__main__":
             num_samples=args.num_samples,
             n_steps=args.num_generated_tokens,
             do_sample=args.do_sample,
-            temperature=args.temperature,
+            temperature=temp,
+            top_p=top_p,
             device=device,
         )
         print("\n")
