@@ -2,7 +2,7 @@
 
 #SBATCH --partition=gpu_mig
 #SBATCH --gpus=1
-#SBATCH --job-name=Train_GPT
+#SBATCH --job-name=GPT_generate
 #SBATCH --ntasks=1
 #SBATCH --cpus-per-task=9
 #SBATCH --time=04:00:00
@@ -16,5 +16,27 @@ module load Anaconda3/2023.07-2
 cd $HOME/uvadlc_practicals_2024/assignment2/part2/
 # Activate your environment
 source activate dl2024
-# Run your code
-srun python generate.py --temperature 1.0 --top_p 0.8 --prompt "Yesterday, I went to the store and bought some "
+
+# Define the list of prompts and their parameters
+prompt_list=(
+    "Yesterday, I went to the store and bought some|1.0|0.8"
+    "She locked the door before leaving the house because she didnt want anyone to|0.8|0.6"
+    "Once upon a time, in a land where the sun never set, there was a magical forest filled with|1.0|0.9"
+    "The king observed the phenomenon with a sense of quixotic wonder, noting that it both anomalous and|0.7|0.9"
+    "The scientist observed the phenomenon with a sense of quixotic wonder, noting that it both anomalous and|0.7|0.9"
+    "The chicken is ready to eat. We set the table and|0.7|0.6"
+    "Sarah gave her sister a gift because she wanted to make her happy. She was thrilled with the|0.9|0.6"
+    "The kings council convened every year to discuss the welfare of the kingdom. Ten years later, the traditions remained, and the council still|0.9|0.6"
+)
+
+# Loop through the prompts
+for prompt_info in "${prompt_list[@]}"; do
+    # Split the prompt_info into components
+    IFS='|' read -r prompt temperature top_p <<< "$prompt_info"
+    
+    # Print the details to the output
+    printf "Running with prompt: '%s', temperature: %s, top_p: %s\n" "$prompt" "$temperature" "$top_p"
+
+    # Run generate.py with the current prompt and parameters
+    srun python generate.py --num_samples 5 --temperature "$temperature" --top_p "$top_p" --prompt "$prompt"
+done
