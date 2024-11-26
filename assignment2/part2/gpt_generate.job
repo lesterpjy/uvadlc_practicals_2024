@@ -19,14 +19,14 @@ source activate dl2024
 
 # Define the list of prompts and their parameters
 prompt_list=(
-    "Yesterday, I went to the store and bought some|1.0|0.8"
-    "She locked the door before leaving the house because she didnt want anyone to|0.8|0.6"
-    "Once upon a time, in a land where the sun never set, there was a magical forest filled with|1.0|0.9"
-    "The king observed the phenomenon with a sense of quixotic wonder, noting that it both anomalous and|0.7|0.9"
-    "The scientist observed the phenomenon with a sense of quixotic wonder, noting that it both anomalous and|0.7|0.9"
-    "The chicken is ready to eat. We set the table and|0.7|0.6"
-    "Sarah gave her sister a gift because she wanted to make her happy. She was thrilled with the|0.9|0.6"
-    "The kings council convened every year to discuss the welfare of the kingdom. Ten years later, the traditions remained, and the council still|0.9|0.6"
+    "Once upon a time, in a faraway kingdom, there lived a humble woodcutter and his wife, who had two children named |0.7|0.9"
+    "The king proclaimed, "Whoever can spin straw into gold shall |0.65|0.9"
+    "As soon as she was alone that dwarf came in, and said, ‘What will you give me to spin |1.0|0.9"
+    "'Grandmother, what big eyes you have!' exclaimed Little Red Riding Hood. 'All the better to |0.6|0.9"
+    "The dark forest was filled with ancient trees whose twisted branches reached out like |0.75|0.95"
+    "The talking fox approached the lost traveler and offered to guide him in exchange for |0.7|0.9"
+    "'Harken to my words,' the old sage declared, "for the path ahead is fraught with |0.7|0.9"
+    "In the first chapter, the youngest brother received an enchanted cloak. Now, as he faced the dragon, he remembered |0.65|0.85"
 )
 
 # Loop through the prompts
