@@ -1,11 +1,10 @@
 import argparse
-import os
+import os 
 import torch
 import pytorch_lightning as pl
 from dataset import TextDataset, CharTokenizer
 from cfg import get_config
 from gpt import GPT
-
 
 class GPTLightningModule(pl.LightningModule):
 
@@ -15,13 +14,12 @@ class GPTLightningModule(pl.LightningModule):
         self.config = config
         self.model = model
         self.dataset = dataset
-        # self.train_dataset = train_dataset
+        #self.train_dataset = train_dataset
         print("running on device", self.device)
-
+    
     def forward(self, x):
         # Forward pass through the model
         return self.model(x)
-
 
 @torch.inference_mode()
 def generate(
@@ -61,150 +59,97 @@ def generate(
     dix = model.dataset.tokenizer.encode(prompt)
     # return as tensors
     x = torch.tensor(dix, dtype=torch.long).to(device).unsqueeze(0)
-
+    
+    
     # we'll process all desired num_samples in a batch, so expand out the batch dim
     x = x.expand(num_samples, -1)
 
     # forward the model `steps` times to get samples, in a batch
-    y = model.model.generate(
-        x,
-        max_new_tokens=n_steps,
-        do_sample=do_sample,
-        top_k=top_k,
-        top_p=top_p,
-        temperature=temperature,
-    )
-
-    # Decode the predicted outputs
+    y = model.model.generate(x, max_new_tokens=n_steps, do_sample=do_sample, top_k=top_k, top_p=top_p, temperature=temperature)
+    
+    # Decode the predicted outputs 
     decoded_outputs = []
     for i in range(num_samples):
-        # out = tokenizer.decode(y[i].cpu().squeeze())
-        # print(y)
-        out = "".join(
-            [model.dataset.tokenizer.decode([int(k)]) for k in y[i].cpu().squeeze()]
-        )
+        #out = tokenizer.decode(y[i].cpu().squeeze())
+        #print(y)
+        out = ''.join([model.dataset.tokenizer.decode([int(k)]) for k in y[i].cpu().squeeze()])
         decoded_outputs.append(out)
         if verbose:
-            print("-" * 80)
+            print('-'*80)
             print(out)
+
 
 
 if __name__ == "__main__":
 
     args = get_config()
     parser = argparse.ArgumentParser()
-    parser.add_argument(
-        "--model_weights_folder",
-        type=str,
-        default="./logs/gpt-mini/version_0/checkpoints",
-    )
-    parser.add_argument("--num_samples", type=int, default=5)
-    parser.add_argument("--num_generated_tokens", type=int, default=77)
-    parser.add_argument("--do_sample", type=bool, default=True)
-    parser.add_argument("--temperature", type=float, default=1.0)
-    parser.add_argument("--prompt", type=str, default="Yesterday I went to the ")
+    parser.add_argument('--model_weights_folder', type=str, default='./logs/gpt-mini/version_0/checkpoints')
+    parser.add_argument('--num_samples', type=int, default=10)
+    parser.add_argument('--num_generated_tokens', type=int, default=77)
+    parser.add_argument('--do_sample', type=bool, default=True)
+    parser.add_argument('--temperature', type=float, default=1.0)
+    parser.add_argument('--top_k', type=int, default=None)
+    parser.add_argument("--top_p", type=float, default=0.6)
+    parser.add_argument('--prompt', type=str, default='Yesterday I went to the ')
+    parser.add_argument('--pretrained_tokenizer', action='store_true')
     gen_args = parser.parse_args()
     for key, value in vars(gen_args).items():
         setattr(args, key, value)
+    
+    pl.seed_everything(args.seed) 
 
-    pl.seed_everything(args.seed)
-
-    # Load model weights
-    model_weights_path = os.path.join(
-        args.model_weights_folder, sorted(os.listdir(args.model_weights_folder))[-1]
-    )
+    # Load model weights    
+    model_weights_path = os.path.join(args.model_weights_folder, sorted(os.listdir(args.model_weights_folder))[-1])
     state_dict = torch.load(model_weights_path)
 
     # Clean up state dict keys by removing '_orig_mod' prefix if present due to torch.compile()
-    if state_dict["hyper_parameters"]["compile"] and "state_dict" in state_dict:
+    if state_dict['hyper_parameters']['compile'] and 'state_dict' in state_dict:
         cleaned_state_dict = {}
-        for key, value in state_dict["state_dict"].items():
-            new_key = key.replace("model._orig_mod.", "model.")
+        for key, value in state_dict['state_dict'].items():
+            new_key = key.replace('model._orig_mod.', 'model.')
             cleaned_state_dict[new_key] = value
-        state_dict["state_dict"] = cleaned_state_dict
+        state_dict['state_dict'] = cleaned_state_dict
 
     # Initialize model
     default_cfg = GPT.get_default_config()
-    saved_cfg = state_dict["hyper_parameters"]
-
+    saved_cfg = state_dict['hyper_parameters'] 
+    
     saved_cfg = argparse.Namespace(**saved_cfg)
 
     # Convert Namespace objects to dictionaries before combining
     default_cfg_dict = vars(default_cfg)
     saved_cfg_dict = vars(saved_cfg)
     combined_cfg = {**default_cfg_dict, **saved_cfg_dict}
-
+    
     # Create Namespace object from combined dictionary
     cfg = argparse.Namespace(**combined_cfg)
     gpt_model = GPT(cfg)
 
     if args.pretrained_tokenizer:
         import tiktoken
-
         tokenizer = tiktoken.get_encoding("gpt2")
         args.vocab_size = tokenizer.max_token_value
     else:
         tokenizer = CharTokenizer(args.txt_file)
         args.vocab_size = tokenizer.vocab_size  # Set vocab size from tokenizer
-
-    # Setup dataset and model
+    # Create the dataset with the tokenizer
     dataset = TextDataset(args, args.txt_file, args.block_size, tokenizer)
+    
     model = GPTLightningModule(cfg, gpt_model, dataset)
-    model.load_state_dict(state_dict["state_dict"])
+    model.load_state_dict(state_dict['state_dict'])
 
     device = next(model.parameters()).device
 
-    prompt_list = [
-        (
-            "Yesterday, I went to the store and bought some ",
-            1.0,
-            0.8,
-        ),  # syntactic completion
-        (
-            "She locked the door before leaving the house because she didnt want anyone to ",
-            0.8,
-            0.6,
-        ),  # semantic understanding
-        (
-            "Once upon a time, in a land where the sun never set, there was a magical forest filled with ",
-            1.0,
-            0.9,
-        ),  # creativity
-        (
-            "The king observed the phenomenon with a sense of quixotic wonder, noting that it both anomalous and ",
-            0.7,
-            0.9,
-        ),  # rare words
-        (
-            "The scientist observed the phenomenon with a sense of quixotic wonder, noting that it both anomalous and ",
-            0.7,
-            0.9,
-        ),  # rare words
-        ("The chicken is ready to eat. We set the table and ", 0.7, 0.6),  # ambiguity
-        (
-            "Sarah gave her sister a gift because she wanted to make her happy. She was thrilled with the ",
-            0.9,
-            0.6,
-        ),  # coreference resolution
-        (
-            "The kings council convened every year to discuss the welfare of the kingdom. Ten years later, the traditions remained, and the council still ",
-            0.9,
-            0.6,
-        ),  # long range dependency
-    ]
-    for prompt, temp, top_p in prompt_list:
-        print(f"Prompt: {prompt}")
-        print("\n")
-        generate(
-            prompt=prompt,
-            model=model,
-            model_type=args.model_type,
-            num_samples=args.num_samples,
-            n_steps=args.num_generated_tokens,
-            do_sample=args.do_sample,
-            temperature=temp,
-            top_p=top_p,
-            device=device,
-        )
-        print("\n")
-        print("-" * 80)
+    generate(
+        prompt=args.prompt,
+        model=model,
+        model_type=args.model_type,
+        num_samples=args.num_samples,
+        n_steps=args.num_generated_tokens,
+        do_sample=args.do_sample,
+        top_k=args.top_k,
+        top_p=args.top_p,
+        temperature=args.temperature,
+        device=device,
+    )
