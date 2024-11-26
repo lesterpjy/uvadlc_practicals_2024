@@ -1,0 +1,248 @@
+============================================================================================== 
+Warning! Mixing Conda and module environments may lead to corruption of the
+user environment. 
+We do not recommend users mixing those two environments unless absolutely
+necessary. Note that 
+SURF does not provide any support for Conda environment.
+For more information, please refer to our software policy page:
+https://servicedesk.surf.nl/wiki/display/WIKI/Software+policy+Snellius#SoftwarepolicySnellius-UseofAnacondaandMinicondaenvironmentsonSnellius 
+
+Remember that many packages have already been installed on the system and can
+be loaded using 
+the 'module load <package__name>' command. If you are uncertain if a package is
+already available 
+on the system, please use 'module avail' or 'module spider' to search for it.
+============================================================================================== 
+Running with prompt: 'Yesterday, I went to the store and bought some', temperature: 1.0, top_p: 0.8
+[rank: 0] Seed set to 0
+/gpfs/home5/scur2818/uvadlc_practicals_2024/assignment2/part2/generate.py:104: FutureWarning: You are using `torch.load` with `weights_only=False` (the current default value), which uses the default pickle module implicitly. It is possible to construct malicious pickle data which will execute arbitrary code during unpickling (See https://github.com/pytorch/pytorch/blob/main/SECURITY.md#untrusted-models for more details). In a future release, the default value for `weights_only` will be flipped to `True`. This limits the functions that could be executed during unpickling. Arbitrary objects will no longer be allowed to be loaded via this mode unless they are explicitly allowlisted by the user via `torch.serialization.add_safe_globals`. We recommend you start setting `weights_only=True` for any use case where you don't have full control of the loaded file. Please open an issue on GitHub for any issues related to this experimental feature.
+  state_dict = torch.load(model_weights_path)
+True False
+number of parameters: 10.73M
+data has 540241 characters, 87 unique.
+current working directory: /gpfs/home5/scur2818/uvadlc_practicals_2024/assignment2/part2
+txt_file loc: ./assets/book_EN_grimms_fairy_tales.txt
+running on device cpu
+--------------------------------------------------------------------------------
+Yesterday, I went to the store and bought something of that
+it was lying in it. ‘Do I find a circle on the ground, and set 
+--------------------------------------------------------------------------------
+Yesterday, I went to the store and bought some to the yellow buttons: I dare
+not go myself.’ So the mouse had made the fire
+--------------------------------------------------------------------------------
+Yesterday, I went to the store and bought something her father to the table.
+
+The sausage had only to watch the pot to take
+--------------------------------------------------------------------------------
+Yesterday, I went to the store and bought something of that
+poor Heinel was lost, and said, ‘Good heavens! what a lovely ch
+--------------------------------------------------------------------------------
+Yesterday, I went to the store and bought something he
+came to the golden ball, and hurrous creature he went to an innocent
+Running with prompt: 'She locked the door before leaving the house because she didnt want anyone to', temperature: 0.8, top_p: 0.6
+[rank: 0] Seed set to 0
+/gpfs/home5/scur2818/uvadlc_practicals_2024/assignment2/part2/generate.py:104: FutureWarning: You are using `torch.load` with `weights_only=False` (the current default value), which uses the default pickle module implicitly. It is possible to construct malicious pickle data which will execute arbitrary code during unpickling (See https://github.com/pytorch/pytorch/blob/main/SECURITY.md#untrusted-models for more details). In a future release, the default value for `weights_only` will be flipped to `True`. This limits the functions that could be executed during unpickling. Arbitrary objects will no longer be allowed to be loaded via this mode unless they are explicitly allowlisted by the user via `torch.serialization.add_safe_globals`. We recommend you start setting `weights_only=True` for any use case where you don't have full control of the loaded file. Please open an issue on GitHub for any issues related to this experimental feature.
+  state_dict = torch.load(model_weights_path)
+True False
+number of parameters: 10.73M
+data has 540241 characters, 87 unique.
+current working directory: /gpfs/home5/scur2818/uvadlc_practicals_2024/assignment2/part2
+txt_file loc: ./assets/book_EN_grimms_fairy_tales.txt
+running on device cpu
+--------------------------------------------------------------------------------
+She locked the door before leaving the house because she didnt want anyone to go about as the
+.
+He saw nothing was derived at the lid back, and the mother
+--------------------------------------------------------------------------------
+She locked the door before leaving the house because she didnt want anyone to the please, and sat down
+on each side of him, and looked saver the and on ea
+--------------------------------------------------------------------------------
+She locked the door before leaving the house because she didnt want anyone to go. The king
+was the fire was again said: ‘In the shorn stood the children a
+--------------------------------------------------------------------------------
+She locked the door before leaving the house because she didnt want anyone to go.
+
+
+
+
+THE GOLDEN BIRD
+
+A certain king had a beautiful garden, and in the g
+--------------------------------------------------------------------------------
+She locked the door before leaving the house because she didnt want anyone to go out to drink, the
+parson ran out into the world and look about you a litt
+Running with prompt: 'Once upon a time, in a land where the sun never set, there was a magical forest filled with', temperature: 1.0, top_p: 0.9
+srun: Step created for StepId=8692247.2
+[rank: 0] Seed set to 0
+/gpfs/home5/scur2818/uvadlc_practicals_2024/assignment2/part2/generate.py:104: FutureWarning: You are using `torch.load` with `weights_only=False` (the current default value), which uses the default pickle module implicitly. It is possible to construct malicious pickle data which will execute arbitrary code during unpickling (See https://github.com/pytorch/pytorch/blob/main/SECURITY.md#untrusted-models for more details). In a future release, the default value for `weights_only` will be flipped to `True`. This limits the functions that could be executed during unpickling. Arbitrary objects will no longer be allowed to be loaded via this mode unless they are explicitly allowlisted by the user via `torch.serialization.add_safe_globals`. We recommend you start setting `weights_only=True` for any use case where you don't have full control of the loaded file. Please open an issue on GitHub for any issues related to this experimental feature.
+  state_dict = torch.load(model_weights_path)
+True False
+number of parameters: 10.73M
+data has 540241 characters, 87 unique.
+current working directory: /gpfs/home5/scur2818/uvadlc_practicals_2024/assignment2/part2
+txt_file loc: ./assets/book_EN_grimms_fairy_tales.txt
+running on device cpu
+--------------------------------------------------------------------------------
+Once upon a time, in a land where the sun never set, there was a magical forest filled with the lion, and said:
+‘You are my beloved breaded by great fear, and said:
+
+ ‘
+--------------------------------------------------------------------------------
+Once upon a time, in a land where the sun never set, there was a magical forest filled with the sack reman up to deserve at once set free? Why then does this enchantmen
+--------------------------------------------------------------------------------
+Once upon a time, in a land where the sun never set, there was a magical forest filled with the forest. And the king the thieves were frightened, and ran off a little
+w
+--------------------------------------------------------------------------------
+Once upon a time, in a land where the sun never set, there was a magical forest filled with rage.
+
+Away they ran Catherine, and away ran the deving was her fast by her
+
+--------------------------------------------------------------------------------
+Once upon a time, in a land where the sun never set, there was a magical forest filled with the for following morning. As she was
+the most beautiful maiden the sun shon
+Running with prompt: 'The king observed the phenomenon with a sense of quixotic wonder, noting that it both anomalous and', temperature: 0.7, top_p: 0.9
+[rank: 0] Seed set to 0
+/gpfs/home5/scur2818/uvadlc_practicals_2024/assignment2/part2/generate.py:104: FutureWarning: You are using `torch.load` with `weights_only=False` (the current default value), which uses the default pickle module implicitly. It is possible to construct malicious pickle data which will execute arbitrary code during unpickling (See https://github.com/pytorch/pytorch/blob/main/SECURITY.md#untrusted-models for more details). In a future release, the default value for `weights_only` will be flipped to `True`. This limits the functions that could be executed during unpickling. Arbitrary objects will no longer be allowed to be loaded via this mode unless they are explicitly allowlisted by the user via `torch.serialization.add_safe_globals`. We recommend you start setting `weights_only=True` for any use case where you don't have full control of the loaded file. Please open an issue on GitHub for any issues related to this experimental feature.
+  state_dict = torch.load(model_weights_path)
+True False
+number of parameters: 10.73M
+data has 540241 characters, 87 unique.
+current working directory: /gpfs/home5/scur2818/uvadlc_practicals_2024/assignment2/part2
+txt_file loc: ./assets/book_EN_grimms_fairy_tales.txt
+running on device cpu
+--------------------------------------------------------------------------------
+The king observed the phenomenon with a sense of quixotic wonder, noting that it both anomalous and fierceame
+once reigned with his wife and half a little nailed down the stair
+--------------------------------------------------------------------------------
+The king observed the phenomenon with a sense of quixotic wonder, noting that it both anomalous and ventures was dead, but went with it in
+the corner of the market, where every
+--------------------------------------------------------------------------------
+The king observed the phenomenon with a sense of quixotic wonder, noting that it both anomalous and fierers
+with the rest of gold, and enemy the bear was much too hone, the you
+--------------------------------------------------------------------------------
+The king observed the phenomenon with a sense of quixotic wonder, noting that it both anomalous and remained a little house of bread
+which new confinted him, and he begged earn
+--------------------------------------------------------------------------------
+The king observed the phenomenon with a sense of quixotic wonder, noting that it both anomalous and find a
+man to whol, and the mother had two children grew upon the ground. ‘T
+Running with prompt: 'The scientist observed the phenomenon with a sense of quixotic wonder, noting that it both anomalous and', temperature: 0.7, top_p: 0.9
+[rank: 0] Seed set to 0
+/gpfs/home5/scur2818/uvadlc_practicals_2024/assignment2/part2/generate.py:104: FutureWarning: You are using `torch.load` with `weights_only=False` (the current default value), which uses the default pickle module implicitly. It is possible to construct malicious pickle data which will execute arbitrary code during unpickling (See https://github.com/pytorch/pytorch/blob/main/SECURITY.md#untrusted-models for more details). In a future release, the default value for `weights_only` will be flipped to `True`. This limits the functions that could be executed during unpickling. Arbitrary objects will no longer be allowed to be loaded via this mode unless they are explicitly allowlisted by the user via `torch.serialization.add_safe_globals`. We recommend you start setting `weights_only=True` for any use case where you don't have full control of the loaded file. Please open an issue on GitHub for any issues related to this experimental feature.
+  state_dict = torch.load(model_weights_path)
+True False
+number of parameters: 10.73M
+data has 540241 characters, 87 unique.
+current working directory: /gpfs/home5/scur2818/uvadlc_practicals_2024/assignment2/part2
+txt_file loc: ./assets/book_EN_grimms_fairy_tales.txt
+running on device cpu
+--------------------------------------------------------------------------------
+The scientist observed the phenomenon with a sense of quixotic wonder, noting that it both anomalous and
+patied and happily a hair fell down into the well. He took it quickly
+out, b
+--------------------------------------------------------------------------------
+The scientist observed the phenomenon with a sense of quixotic wonder, noting that it both anomalous and venupon.
+
+The little man crawn to the steak and to go home at all, but they 
+--------------------------------------------------------------------------------
+The scientist observed the phenomenon with a sense of quixotic wonder, noting that it both anomalous and fiercreast of his father’s and mother’s son said, ‘I have been to be a sture
+--------------------------------------------------------------------------------
+The scientist observed the phenomenon with a sense of quixotic wonder, noting that it both anomalous and noisesider that
+the girl passed the Water of Life, and had brought it with t
+--------------------------------------------------------------------------------
+The scientist observed the phenomenon with a sense of quixotic wonder, noting that it both anomalous and flew off her
+horses, and all began to be so hot and parched that his tongue
+
+Running with prompt: 'The chicken is ready to eat. We set the table and', temperature: 0.7, top_p: 0.6
+[rank: 0] Seed set to 0
+/gpfs/home5/scur2818/uvadlc_practicals_2024/assignment2/part2/generate.py:104: FutureWarning: You are using `torch.load` with `weights_only=False` (the current default value), which uses the default pickle module implicitly. It is possible to construct malicious pickle data which will execute arbitrary code during unpickling (See https://github.com/pytorch/pytorch/blob/main/SECURITY.md#untrusted-models for more details). In a future release, the default value for `weights_only` will be flipped to `True`. This limits the functions that could be executed during unpickling. Arbitrary objects will no longer be allowed to be loaded via this mode unless they are explicitly allowlisted by the user via `torch.serialization.add_safe_globals`. We recommend you start setting `weights_only=True` for any use case where you don't have full control of the loaded file. Please open an issue on GitHub for any issues related to this experimental feature.
+  state_dict = torch.load(model_weights_path)
+True False
+number of parameters: 10.73M
+data has 540241 characters, 87 unique.
+current working directory: /gpfs/home5/scur2818/uvadlc_practicals_2024/assignment2/part2
+txt_file loc: ./assets/book_EN_grimms_fairy_tales.txt
+running on device cpu
+--------------------------------------------------------------------------------
+The chicken is ready to eat. We set the table and carried them outside, and all the time she did nothing but
+weep. Then she la
+--------------------------------------------------------------------------------
+The chicken is ready to eat. We set the table and carried them outside, and all the time she did nothing but
+weep. Then she la
+--------------------------------------------------------------------------------
+The chicken is ready to eat. We set the table and be carried off
+two wicked with the butter as I day not long after the spindl
+--------------------------------------------------------------------------------
+The chicken is ready to eat. We set the table and cannot survice upon
+them. Then they gave him the cloak, and he wished himsel
+--------------------------------------------------------------------------------
+The chicken is ready to eat. We set the table and go shell, and what he
+asked: but Snowdrop was left at home, and when he took
+Running with prompt: 'Sarah gave her sister a gift because she wanted to make her happy. She was thrilled with the', temperature: 0.9, top_p: 0.6
+srun: Step created for StepId=8692247.6
+[rank: 0] Seed set to 0
+/gpfs/home5/scur2818/uvadlc_practicals_2024/assignment2/part2/generate.py:104: FutureWarning: You are using `torch.load` with `weights_only=False` (the current default value), which uses the default pickle module implicitly. It is possible to construct malicious pickle data which will execute arbitrary code during unpickling (See https://github.com/pytorch/pytorch/blob/main/SECURITY.md#untrusted-models for more details). In a future release, the default value for `weights_only` will be flipped to `True`. This limits the functions that could be executed during unpickling. Arbitrary objects will no longer be allowed to be loaded via this mode unless they are explicitly allowlisted by the user via `torch.serialization.add_safe_globals`. We recommend you start setting `weights_only=True` for any use case where you don't have full control of the loaded file. Please open an issue on GitHub for any issues related to this experimental feature.
+  state_dict = torch.load(model_weights_path)
+True False
+number of parameters: 10.73M
+data has 540241 characters, 87 unique.
+current working directory: /gpfs/home5/scur2818/uvadlc_practicals_2024/assignment2/part2
+txt_file loc: ./assets/book_EN_grimms_fairy_tales.txt
+running on device cpu
+--------------------------------------------------------------------------------
+Sarah gave her sister a gift because she wanted to make her happy. She was thrilled with the good was
+therefore honourably received, and a spring as beautiful as her mot
+--------------------------------------------------------------------------------
+Sarah gave her sister a gift because she wanted to make her happy. She was thrilled with the good into the forest,
+and it lay there in deep stillness and solitude, and n
+--------------------------------------------------------------------------------
+Sarah gave her sister a gift because she wanted to make her happy. She was thrilled with the goose.
+
+So on he jogged, and all seemed now to go right with him: he had met
+--------------------------------------------------------------------------------
+Sarah gave her sister a gift because she wanted to make her happy. She was thrilled with the window to see if you wait?’ Then he beneath a man
+looked for him, and the be
+--------------------------------------------------------------------------------
+Sarah gave her sister a gift because she wanted to make her happy. She was thrilled with the good wind and
+weather. Once in summer when he was working was led
+to earn hi
+Running with prompt: 'The kings council convened every year to discuss the welfare of the kingdom. Ten years later, the traditions remained, and the council still', temperature: 0.9, top_p: 0.6
+[rank: 0] Seed set to 0
+/gpfs/home5/scur2818/uvadlc_practicals_2024/assignment2/part2/generate.py:104: FutureWarning: You are using `torch.load` with `weights_only=False` (the current default value), which uses the default pickle module implicitly. It is possible to construct malicious pickle data which will execute arbitrary code during unpickling (See https://github.com/pytorch/pytorch/blob/main/SECURITY.md#untrusted-models for more details). In a future release, the default value for `weights_only` will be flipped to `True`. This limits the functions that could be executed during unpickling. Arbitrary objects will no longer be allowed to be loaded via this mode unless they are explicitly allowlisted by the user via `torch.serialization.add_safe_globals`. We recommend you start setting `weights_only=True` for any use case where you don't have full control of the loaded file. Please open an issue on GitHub for any issues related to this experimental feature.
+  state_dict = torch.load(model_weights_path)
+True False
+number of parameters: 10.73M
+data has 540241 characters, 87 unique.
+current working directory: /gpfs/home5/scur2818/uvadlc_practicals_2024/assignment2/part2
+txt_file loc: ./assets/book_EN_grimms_fairy_tales.txt
+running on device cpu
+--------------------------------------------------------------------------------
+The kings council convened every year to discuss the welfare of the kingdom. Ten years later, the traditions remained, and the council still late the boy sat
+upon his back, and rode his horse against her stall, and br
+--------------------------------------------------------------------------------
+The kings council convened every year to discuss the welfare of the kingdom. Ten years later, the traditions remained, and the council still less not
+coming but a ring and gave him the bow and fiddle,
+and when she saw
+--------------------------------------------------------------------------------
+The kings council convened every year to discuss the welfare of the kingdom. Ten years later, the traditions remained, and the council still more
+for him as he could possibly use at the royal table. So he summoned all
+--------------------------------------------------------------------------------
+The kings council convened every year to discuss the welfare of the kingdom. Ten years later, the traditions remained, and the council still journey
+tomorrow of the washing-bowl, and the seventh into the clock-case. B
+--------------------------------------------------------------------------------
+The kings council convened every year to discuss the welfare of the kingdom. Ten years later, the traditions remained, and the council still would not be able to find the way thither.
+
+Rose-red led her betrothed heart
+
+JOB STATISTICS
+==============
+Job ID: 8692247
+Cluster: snellius
+User/Group: scur2818/scur2818
+State: COMPLETED (exit code 0)
+Nodes: 1
+Cores per node: 9
+CPU Utilized: 00:03:57
+CPU Efficiency: 33.33% of 00:11:51 core-walltime
+Job Wall-clock time: 00:01:19
+Memory Utilized: 7.94 MB
+Memory Efficiency: 0.01% of 60.00 GB
