@@ -131,7 +131,7 @@ class CausalSelfAttention(nn.Module):
         Returns:
             Tuple[torch.Tensor, torch.Tensor]: Tuple containing the modified query and key tensors.
         """
-        # Generate position indices
+        # Generate RoPE embeddings dynamically based on T
         seq_pos = torch.arange(T, device=xq.device)  # Shape: (T)
         # Compute frequencies
         freqs = torch.einsum("i,j->ij", seq_pos, self.inv_freq.to(xq.device)).to(
@@ -143,13 +143,13 @@ class CausalSelfAttention(nn.Module):
         sin_emb = freqs.sin()  # (1, 1, T, head_dim // 2)
         cos_emb = freqs.cos()  # (1, 1, T, head_dim // 2)
 
-        # Split xq and xk into even and odd parts
+        # Split pos into sin and cos components, repeating each to match xq and xk dimensions
         xq_even = xq[..., ::2]  # (B, n_head, T, head_dim // 2)
         xq_odd = xq[..., 1::2]  # (B, n_head, T, head_dim // 2)
         xk_even = xk[..., ::2]
         xk_odd = xk[..., 1::2]
 
-        # Apply rotation
+        # Apply RoPE transformation: pair and rotate dimensions
         xq_rot_even = xq_even * cos_emb - xq_odd * sin_emb
         xq_rot_odd = xq_even * sin_emb + xq_odd * cos_emb
         xq_rot = torch.stack((xq_rot_even, xq_rot_odd), dim=-1).reshape_as(xq)
@@ -159,23 +159,6 @@ class CausalSelfAttention(nn.Module):
         xk_rot = torch.stack((xk_rot_even, xk_rot_odd), dim=-1).reshape_as(xk)
 
         return xq_rot, xk_rot
-
-        # # Generate RoPE embeddings dynamically based on T
-        # seq_pos = torch.arange(T, device=xq.device)  # Shape: (T)
-        # freqs = ...  # Shape: (T, dim // 2)
-        # pos_emb = ...  # Shape: (1, 1, T, dim)
-
-        # # Split pos into sin and cos components, repeating each to match xq and xk dimensions
-        # pos_sin = ...
-        # pos_cos = ...
-
-        # # Apply RoPE transformation: pair and rotate dimensions
-        # # Rotate query and key tensors
-        # xq_rot = ...
-        # xk_rot = ...
-        # raise NotImplementedError
-
-        # return xq_rot, xk_rot
 
     def forward(self, x):
         B, T, C = (
@@ -584,22 +567,22 @@ class GPT(nn.Module):
             # forward the model to get the logits for the index in the sequence
             logits = self.forward(idx_cond)  # (B, T, vocab_size)
 
-            # Get logits for the last token and apply temperature
+            # pluck the logits at the final step and scale by desired temperature
             logits = logits[:, -1, :] / temperature  # (B, vocab_size)
 
             if not do_sample:
                 # take the most likely token
                 idx_next = torch.argmax(logits, dim=-1, keepdim=True)  # (B, 1)
             else:
-                # Apply softmax to get probabilities
+                # apply softmax to convert logits to (normalized) probabilities
                 probs = F.softmax(logits, dim=-1)  # (batch_size, vocab_size)
 
-                # Top-k sampling
+                # optionally only consider top-k logits for sampling.
                 if top_k is not None:
                     values, indices = torch.topk(probs, k=top_k, dim=-1)
                     probs = torch.zeros_like(probs).scatter_(-1, indices, values)
                     probs = probs / probs.sum(dim=-1, keepdim=True)
-                # Top-p (nucleus) sampling
+                # optionally apply top-p sampling
                 elif top_p is not None:
                     sorted_probs, sorted_indices = torch.sort(
                         probs, descending=True, dim=-1
@@ -620,40 +603,10 @@ class GPT(nn.Module):
                     probs = probs.masked_fill(indices_to_remove, 0.0)
                     probs = probs / probs.sum(dim=-1, keepdim=True)
 
-                # Sample from the distribution
+                # sample from the distribution
                 idx_next = torch.multinomial(probs, num_samples=1)  # (batch_size, 1)
 
-            # Append the new token
+            # append sampled index to the running sequence and continue
             idx = torch.cat((idx, idx_next), dim=1)  # (batch_size, seq_len+1)
 
         return idx
-
-        # assert not (top_k and top_p), "You can only use one of top_k or top_p sampling"
-        # for _ in range(max_new_tokens):
-        #     # if the sequence context is growing too long we must crop it at block_size
-        #     idx_cond = (
-        #         idx if idx.size(1) <= self.block_size else idx[:, -self.block_size :]
-        #     )
-
-        #     # forward the model to get the logits for the index in the sequence
-        #     # pluck the logits at the final step and scale by desired temperature
-
-        #     if not do_sample:
-        #         # take the most likely token
-        #         idx_next = ...
-
-        #     else:
-        #         # apply softmax to convert logits to (normalized) probabilities
-
-        #         # optionally only consider top-k logits for sampling.
-        #         if top_k is not None:
-        #             pass
-
-        #         # optionally apply top-p sampling
-        #         if top_p is not None:
-        #             pass
-
-        #     # append sampled index to the running sequence and continue
-        #     idx = ...
-
-        # return idx
