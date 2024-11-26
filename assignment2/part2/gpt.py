@@ -186,7 +186,7 @@ class CausalSelfAttention(nn.Module):
                 q,
                 k,
                 v,
-                attn_mask=self.mask[:, :, :T, :T],
+                attn_mask=None,
                 dropout_p=self.attn_dropout.p,
                 is_causal=True,
             )
