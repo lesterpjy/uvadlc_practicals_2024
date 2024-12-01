@@ -51,8 +51,6 @@ class RMSNorm(nn.Module):
         self.weight = nn.Parameter(torch.ones(dim))
 
     def forward(self, x):
-        # Compute the norm of the input tensor and divide by the norm
-        # Scale the normalized tensor by the learned weight parameter
         output = (
             x
             / torch.sqrt(torch.mean(x**2, dim=-1, keepdim=True) + self.eps)
@@ -136,20 +134,20 @@ class CausalSelfAttention(nn.Module):
         # Compute frequencies
         freqs = torch.einsum("i,j->ij", seq_pos, self.inv_freq.to(xq.device)).to(
             xq.dtype
-        )  # (T, head_dim // 2)
-        # Expand to match xq and xk dimensions
-        freqs = freqs.unsqueeze(0).unsqueeze(0)  # (1, 1, T, head_dim // 2)
-        # Now compute sin and cos
-        sin_emb = freqs.sin()  # (1, 1, T, head_dim // 2)
-        cos_emb = freqs.cos()  # (1, 1, T, head_dim // 2)
+        )
+
+        freqs = freqs.unsqueeze(0).unsqueeze(0)
+        sin_emb = freqs.sin()
+        cos_emb = freqs.cos()
 
         # Split pos into sin and cos components, repeating each to match xq and xk dimensions
-        xq_even = xq[..., ::2]  # (B, n_head, T, head_dim // 2)
-        xq_odd = xq[..., 1::2]  # (B, n_head, T, head_dim // 2)
+        xq_even = xq[..., ::2]
+        xq_odd = xq[..., 1::2]
         xk_even = xk[..., ::2]
         xk_odd = xk[..., 1::2]
 
         # Apply RoPE transformation: pair and rotate dimensions
+        # Rotate query and key tensors
         xq_rot_even = xq_even * cos_emb - xq_odd * sin_emb
         xq_rot_odd = xq_even * sin_emb + xq_odd * cos_emb
         xq_rot = torch.stack((xq_rot_even, xq_rot_odd), dim=-1).reshape_as(xq)
