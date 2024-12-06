@@ -150,7 +150,9 @@ def visualize_manifold(decoder, grid_size=20):
     decoded = torch.nn.functional.softmax(decoded, dim=1)
 
     # Convert 16-channel to single-channel by taking argmax
-    decoded = decoded.argmax(dim=1, keepdim=True)  # now shape: [grid_size^2, 1, H, W]
+    decoded = decoded.argmax(
+        dim=1, keepdim=True
+    ).float()  # now shape: [grid_size^2, 1, H, W]
 
     # Make a grid of images
     img_grid = make_grid(decoded, nrow=grid_size, normalize=False, padding=1)
