@@ -30,13 +30,16 @@ def sample_reparameterize(mean, std):
         z - A sample of the distributions, with gradient support for both mean and std.
             The tensor should have the same shape as the mean and std input tensors.
     """
-    assert not (std < 0).any().item(), "The reparameterization trick got a negative std as input. " + \
-                                       "Are you sure your input is std and not log_std?"
+    assert not (std < 0).any().item(), (
+        "The reparameterization trick got a negative std as input. "
+        + "Are you sure your input is std and not log_std?"
+    )
     #######################
     # PUT YOUR CODE HERE  #
     #######################
-    z = None
-    raise NotImplementedError
+    eps = torch.randn_like(std)
+    # reparameterize
+    z = mean + std * eps
     #######################
     # END OF YOUR CODE    #
     #######################
@@ -58,8 +61,11 @@ def KLD(mean, log_std):
     #######################
     # PUT YOUR CODE HERE  #
     #######################
-    KLD = None
-    raise NotImplementedError
+    # compute components
+    var = torch.exp(2 * log_std)
+    kld = 0.5 * (var + mean**2 - 1 - 2 * log_std)
+    # sum over last dimension
+    KLD = torch.sum(kld, dim=-1)
     #######################
     # END OF YOUR CODE    #
     #######################
@@ -78,8 +84,14 @@ def elbo_to_bpd(elbo, img_shape):
     #######################
     # PUT YOUR CODE HERE  #
     #######################
-    bpd = None
-    raise NotImplementedError
+    # excluding batch
+    _, C, H, W = img_shape
+    num_dims = C * H * W
+
+    # convert from nats to bits and normalize by number of dimensions
+    bpd = (
+        elbo * (1.0 / num_dims) * (1.0 / torch.log(torch.tensor(2.0)))
+    )  # log2(e) = 1/log(2)
     #######################
     # END OF YOUR CODE    #
     #######################
@@ -110,11 +122,37 @@ def visualize_manifold(decoder, grid_size=20):
     #######################
     # PUT YOUR CODE HERE  #
     #######################
-    img_grid = None
-    raise NotImplementedError
+    # normal(0,1) distribution to access icdf
+    normal = torch.distributions.Normal(0, 1)
+
+    # generate the percentiles
+    percentiles = torch.linspace(
+        0.5 / grid_size, (grid_size - 0.5) / grid_size, grid_size
+    )
+
+    # convert percentiles to latent values using the inverse CDF
+    z_values = normal.icdf(percentiles)
+
+    # create a meshgrid of Z values (z_x, z_y)
+    z_x, z_y = torch.meshgrid(z_values, z_values)
+    z_x = z_x.flatten()
+    z_y = z_y.flatten()
+
+    # create the latent codes [grid_size^2, 2]
+    Z = torch.stack([z_x, z_y], dim=-1).to(next(decoder.parameters()).device)
+
+    # decode the latent codes
+    decoded = decoder(Z)  # shape: [grid_size^2, C, H, W] (model dependent)
+
+    # apply softmax over the channel dimension if the decoder outputs logits for a categorical distribution
+    # if the model is Bernoulli with logits, you might use torch.sigmoid instead.
+    # adjust based on your model.
+    decoded = torch.nn.functional.softmax(decoded, dim=1)
+
+    # Make a grid of images
+    img_grid = make_grid(decoded, nrow=grid_size, normalize=False, padding=1)
     #######################
     # END OF YOUR CODE    #
     #######################
 
     return img_grid
-

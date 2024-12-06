@@ -21,10 +21,12 @@ import torch.utils.data as data
 from torch.utils.data import random_split
 import numpy as np
 
-def discretize(x, num_values):
-    return (x * num_values).long().clamp_(max=num_values-1)
 
-def mnist(root='../data/', batch_size=128, num_workers=4, download=True):
+def discretize(x, num_values):
+    return (x * num_values).long().clamp_(max=num_values - 1)
+
+
+def mnist(root="../data/", batch_size=128, num_workers=4, download=True):
     """
     Returns data loaders for 4-bit MNIST dataset, i.e. values between 0 and 15.
 
@@ -37,31 +39,47 @@ def mnist(root='../data/', batch_size=128, num_workers=4, download=True):
         download - If True, MNIST is downloaded if it cannot be found in the specified
                    root directory.
     """
-    data_transforms = transforms.Compose([transforms.ToTensor(),
-                                          transforms.Lambda(lambda x: discretize(x, num_values=16))
-                                        ])
+    data_transforms = transforms.Compose(
+        [
+            transforms.ToTensor(),
+            transforms.Lambda(lambda x: discretize(x, num_values=16)),
+        ]
+    )
 
     dataset = torchvision.datasets.MNIST(
-        root, train=True, transform=data_transforms, download=download)
+        root, train=True, transform=data_transforms, download=download
+    )
     test_set = torchvision.datasets.MNIST(
-        root, train=False, transform=data_transforms, download=download)
+        root, train=False, transform=data_transforms, download=download
+    )
 
-    train_dataset, val_dataset = random_split(dataset,
-                                              lengths=[54000, 6000],
-                                              generator=torch.Generator().manual_seed(42))
+    train_dataset, val_dataset = random_split(
+        dataset, lengths=[54000, 6000], generator=torch.Generator().manual_seed(42)
+    )
 
     # Each data loader returns tuples of (img, label)
     # For the generative models we don't need the labels, which we need to take into account
     # when writing the train code.
     train_loader = data.DataLoader(
-        train_dataset, batch_size=batch_size, shuffle=True, num_workers=num_workers,
-        pin_memory=True)
+        train_dataset,
+        batch_size=batch_size,
+        shuffle=True,
+        num_workers=num_workers,
+        pin_memory=True,
+    )
     val_loader = data.DataLoader(
-        val_dataset, batch_size=batch_size, shuffle=False, num_workers=num_workers,
-        drop_last=False)
+        val_dataset,
+        batch_size=batch_size,
+        shuffle=False,
+        num_workers=num_workers,
+        drop_last=False,
+    )
     test_loader = data.DataLoader(
-        test_set, batch_size=batch_size, shuffle=False, num_workers=num_workers,
-        drop_last=False)
+        test_set,
+        batch_size=batch_size,
+        shuffle=False,
+        num_workers=num_workers,
+        drop_last=False,
+    )
 
     return train_loader, val_loader, test_loader
-

@@ -70,10 +70,39 @@ class VAE(pl.LightningModule):
         #######################
         # PUT YOUR CODE HERE  #
         #######################
-        L_rec = None
-        L_reg = None
-        bpd = None
-        raise NotImplementedError
+        B, C, H, W = imgs.shape
+
+        # Encode: get mean and log_std for q(z|x)
+        mean, log_std = self.encoder(imgs)
+        std = torch.exp(log_std)
+
+        # Reparameterize to get z
+        z = sample_reparameterize(mean, std)
+
+        # Decode z to get logits for each pixel intensity level
+        logits = self.decoder(z)  # Shape: [B,16,H,W]
+
+        # Compute Reconstruction Loss:
+        # The target should be [B,H,W], with values in [0..15].
+        # Ensure the target is in the correct shape
+        targets = imgs.squeeze(1)  # remove channel dim if it's 1. Now [B,H,W].
+
+        # By default, F.cross_entropy averages over all elements.
+        # We want to first get a pixel-wise loss, then sum over pixels and average over batch.
+        nll = F.cross_entropy(logits, targets, reduction="none")  # Shape: [B,H,W]
+        # Sum over spatial dimensions, then average over batch
+        L_rec = nll.sum(dim=[1, 2]).mean(dim=0)
+
+        # Compute KL Divergence Loss:
+        # KLD returns [B], one value per sample
+        kld = KLD(mean, log_std)
+        L_reg = kld.mean(dim=0)
+
+        # Total ELBO = Reconstruction + Regularization
+        elbo = L_rec + L_reg
+
+        # Convert ELBO to bits per dimension
+        bpd = elbo_to_bpd(elbo, imgs.shape)
         #######################
         # END OF YOUR CODE    #
         #######################
@@ -91,8 +120,20 @@ class VAE(pl.LightningModule):
         #######################
         # PUT YOUR CODE HERE  #
         #######################
-        x_samples = None
-        raise NotImplementedError
+        device = next(self.parameters()).device
+        z_dim = self.hparams.z_dim
+
+        # Sample z ~ N(0, I)
+        z = torch.randn(batch_size, z_dim, device=device)
+
+        # Decode to get logits
+        logits = self.decoder(z)  # [B,16,H,W]
+
+        # Get the most likely intensity (argmax) to produce discrete samples
+        samples = logits.argmax(dim=1)  # [B,H,W]
+
+        # Add channel dimension back if needed
+        x_samples = samples.unsqueeze(1)  # [B,C,H,W]
         #######################
         # END OF YOUR CODE    #
         #######################
@@ -146,8 +187,8 @@ class GenerateCallback(pl.Callback):
         This function is called after every epoch.
         Call the save_and_sample function every N epochs.
         """
-        if (trainer.current_epoch+1) % self.every_n_epochs == 0:
-            self.sample_and_save(trainer, pl_module, trainer.current_epoch+1)
+        if (trainer.current_epoch + 1) % self.every_n_epochs == 0:
+            self.sample_and_save(trainer, pl_module, trainer.current_epoch + 1)
 
     def sample_and_save(self, trainer, pl_module, epoch):
         """
@@ -160,13 +201,18 @@ class GenerateCallback(pl.Callback):
             epoch - The epoch number to use for TensorBoard logging and saving of the files.
         """
         samples = pl_module.sample(self.batch_size)
-        samples = samples.float() / 15  # Converting 4-bit images to values between 0 and 1
-        grid = make_grid(samples, nrow=8, normalize=True, value_range=(0, 1), pad_value=0.5)
+        samples = (
+            samples.float() / 15
+        )  # Converting 4-bit images to values between 0 and 1
+        grid = make_grid(
+            samples, nrow=8, normalize=True, value_range=(0, 1), pad_value=0.5
+        )
         grid = grid.detach().cpu()
         trainer.logger.experiment.add_image("Samples", grid, global_step=epoch)
         if self.save_to_disk:
-            save_image(grid,
-                        os.path.join(trainer.logger.log_dir, f"epoch_{epoch}_samples.png"))
+            save_image(
+                grid, os.path.join(trainer.logger.log_dir, f"epoch_{epoch}_samples.png")
+            )
 
 
 def train_vae(args):
@@ -177,29 +223,35 @@ def train_vae(args):
     """
 
     os.makedirs(args.log_dir, exist_ok=True)
-    train_loader, val_loader, test_loader = mnist(batch_size=args.batch_size,
-                                                   num_workers=args.num_workers,
-                                                   root=args.data_dir)
+    train_loader, val_loader, test_loader = mnist(
+        batch_size=args.batch_size, num_workers=args.num_workers, root=args.data_dir
+    )
 
     # Create a PyTorch Lightning trainer with the generation callback
-    gen_callback = GenerateCallback(save_to_disk=True)
-    save_callback = ModelCheckpoint(save_weights_only=True, mode="min", monitor="val_bpd")
-    trainer = pl.Trainer(default_root_dir=args.log_dir,
-                         accelerator="auto",
-                         max_epochs=args.epochs,
-                         callbacks=[save_callback, gen_callback],
-                         enable_progress_bar=args.progress_bar)
-    trainer.logger._default_hp_metric = None  # Optional logging argument that we don't need
+    gen_callback = GenerateCallback(save_to_disk=True, every_n_epochs=10)
+    save_callback = ModelCheckpoint(
+        save_weights_only=True, mode="min", monitor="val_bpd"
+    )
+    trainer = pl.Trainer(
+        default_root_dir=args.log_dir,
+        accelerator="auto",
+        max_epochs=args.epochs,
+        callbacks=[save_callback, gen_callback],
+        enable_progress_bar=args.progress_bar,
+    )
+    trainer.logger._default_hp_metric = (
+        None  # Optional logging argument that we don't need
+    )
     if not args.progress_bar:
-        print("[INFO] The progress bar has been suppressed. For updates on the training " + \
-              f"progress, check the TensorBoard file at {trainer.logger.log_dir}. If you " + \
-              "want to see the progress bar, use the argparse option \"progress_bar\".\n")
+        print(
+            "[INFO] The progress bar has been suppressed. For updates on the training "
+            + f"progress, check the TensorBoard file at {trainer.logger.log_dir}. If you "
+            + 'want to see the progress bar, use the argparse option "progress_bar".\n'
+        )
 
     # Create model
     pl.seed_everything(args.seed)  # To be reproducible
-    model = VAE(num_filters=args.num_filters,
-                z_dim=args.z_dim,
-                lr=args.lr)
+    model = VAE(num_filters=args.num_filters, z_dim=args.z_dim, lr=args.lr)
 
     # Training
     gen_callback.sample_and_save(trainer, model, epoch=0)  # Initial sample
@@ -212,47 +264,69 @@ def train_vae(args):
     # Manifold generation
     if args.z_dim == 2:
         img_grid = visualize_manifold(model.decoder)
-        save_image(img_grid,
-                   os.path.join(trainer.logger.log_dir, 'vae_manifold.png'),
-                   normalize=False)
+        save_image(
+            img_grid,
+            os.path.join(trainer.logger.log_dir, "vae_manifold.png"),
+            normalize=False,
+        )
 
     return test_result
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     # Feel free to add more argument parameters
     parser = argparse.ArgumentParser(
-        formatter_class=argparse.ArgumentDefaultsHelpFormatter)
+        formatter_class=argparse.ArgumentDefaultsHelpFormatter
+    )
 
     # Model hyperparameters
-    parser.add_argument('--z_dim', default=20, type=int,
-                        help='Dimensionality of latent space')
-    parser.add_argument('--num_filters', default=32, type=int,
-                        help='Number of channels/filters to use in the CNN encoder/decoder.')
+    parser.add_argument(
+        "--z_dim", default=20, type=int, help="Dimensionality of latent space"
+    )
+    parser.add_argument(
+        "--num_filters",
+        default=32,
+        type=int,
+        help="Number of channels/filters to use in the CNN encoder/decoder.",
+    )
 
     # Optimizer hyperparameters
-    parser.add_argument('--lr', default=1e-3, type=float,
-                        help='Learning rate to use')
-    parser.add_argument('--batch_size', default=128, type=int,
-                        help='Minibatch size')
+    parser.add_argument("--lr", default=1e-3, type=float, help="Learning rate to use")
+    parser.add_argument("--batch_size", default=128, type=int, help="Minibatch size")
 
     # Other hyperparameters
-    parser.add_argument('--data_dir', default='../data/', type=str,
-                        help='Directory where to look for the data. For jobs on Lisa, this should be $TMPDIR.')
-    parser.add_argument('--epochs', default=80, type=int,
-                        help='Max number of epochs')
-    parser.add_argument('--seed', default=42, type=int,
-                        help='Seed to use for reproducing results')
-    parser.add_argument('--num_workers', default=4, type=int,
-                        help='Number of workers to use in the data loaders. To have a truly deterministic run, this has to be 0. ' + \
-                             'For your assignment report, you can use multiple workers (e.g. 4) and do not have to set it to 0.')
-    parser.add_argument('--log_dir', default='VAE_logs', type=str,
-                        help='Directory where the PyTorch Lightning logs should be created.')
-    parser.add_argument('--progress_bar', action='store_true',
-                        help=('Use a progress bar indicator for interactive experimentation. '
-                              'Not to be used in conjuction with SLURM jobs'))
+    parser.add_argument(
+        "--data_dir",
+        default="../data/",
+        type=str,
+        help="Directory where to look for the data. For jobs on Lisa, this should be $TMPDIR.",
+    )
+    parser.add_argument("--epochs", default=80, type=int, help="Max number of epochs")
+    parser.add_argument(
+        "--seed", default=42, type=int, help="Seed to use for reproducing results"
+    )
+    parser.add_argument(
+        "--num_workers",
+        default=4,
+        type=int,
+        help="Number of workers to use in the data loaders. To have a truly deterministic run, this has to be 0. "
+        + "For your assignment report, you can use multiple workers (e.g. 4) and do not have to set it to 0.",
+    )
+    parser.add_argument(
+        "--log_dir",
+        default="VAE_logs",
+        type=str,
+        help="Directory where the PyTorch Lightning logs should be created.",
+    )
+    parser.add_argument(
+        "--progress_bar",
+        action="store_true",
+        help=(
+            "Use a progress bar indicator for interactive experimentation. "
+            "Not to be used in conjuction with SLURM jobs"
+        ),
+    )
 
     args = parser.parse_args()
 
     train_vae(args)
-
