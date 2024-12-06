@@ -84,7 +84,7 @@ if __name__ == "__main__":
 
     args = get_config()
     parser = argparse.ArgumentParser()
-    parser.add_argument('--model_weights_folder', type=str, default='./logs/gpt-mini/version_0/checkpoints')
+    parser.add_argument('--model_weights_folder', type=str, default='./logs/gpt-mini/version_1/checkpoints')
     parser.add_argument('--num_samples', type=int, default=10)
     parser.add_argument('--num_generated_tokens', type=int, default=77)
     parser.add_argument('--do_sample', type=bool, default=True)

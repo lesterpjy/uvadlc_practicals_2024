@@ -1,0 +1,20 @@
+#!/bin/bash
+
+#SBATCH --partition=gpu_a100
+#SBATCH --gres=gpu:1
+#SBATCH --cpus-per-task=9
+#SBATCH --gpus=1
+#SBATCH --job-name=TrainVAE
+#SBATCH --ntasks=1
+#SBATCH --time=02:00:00
+#SBATCH --mem=32000M
+#SBATCH --output=vae_train_%A.out
+
+module purge
+module load 2023
+module load Anaconda3/2023.07-2
+
+# Activate your environment
+source activate dl2024
+# Run your code
+srun python -u train_pl.py --z_dim 2 --data_dir $TMPDIR/ --log_dir "VAE_zdim2_logs" --progress_bar
