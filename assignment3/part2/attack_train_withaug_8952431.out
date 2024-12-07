@@ -1,0 +1,39 @@
+============================================================================================== 
+Warning! Mixing Conda and module environments may lead to corruption of the
+user environment. 
+We do not recommend users mixing those two environments unless absolutely
+necessary. Note that 
+SURF does not provide any support for Conda environment.
+For more information, please refer to our software policy page:
+https://servicedesk.surf.nl/wiki/display/WIKI/Software+policy+Snellius#SoftwarepolicySnellius-UseofAnacondaandMinicondaenvironmentsonSnellius 
+
+Remember that many packages have already been installed on the system and can
+be loaded using 
+the 'module load <package__name>' command. If you are uncertain if a package is
+already available 
+on the system, please use 'module avail' or 'module spider' to search for it.
+============================================================================================== 
+usage: train.py [-h] [--batch_size BATCH_SIZE] [--valid_ratio VALID_RATIO]
+                [--augmentations] [--pretrained] [--num_epochs NUM_EPOCHS]
+                [--train_strats {standard,fgsm,pgd} [{standard,fgsm,pgd} ...]]
+                [--visualise] [--epsilon_fgsm EPSILON_FGSM]
+                [--alpha_fgsm ALPHA_FGSM] [--epsilon_pgd EPSILON_PGD]
+                [--alpha_pgd ALPHA_PGD] [--num_iter_pgd NUM_ITER_PGD]
+                [--save_dir SAVE_DIR] [--test_crossover_defense]
+train.py: error: unrecognized arguments: True
+srun: error: gcn19: task 0: Exited with exit code 2
+srun: Terminating StepId=8952431.0
+
+JOB STATISTICS
+==============
+Job ID: 8952431
+Cluster: snellius
+User/Group: scur2818/scur2818
+State: FAILED (exit code 2)
+Nodes: 1
+Cores per node: 18
+CPU Utilized: 00:00:06
+CPU Efficiency: 1.85% of 00:05:24 core-walltime
+Job Wall-clock time: 00:00:18
+Memory Utilized: 2.09 MB
+Memory Efficiency: 0.01% of 31.25 GB
