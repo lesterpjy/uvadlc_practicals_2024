@@ -1,0 +1,210 @@
+============================================================================================== 
+Warning! Mixing Conda and module environments may lead to corruption of the
+user environment. 
+We do not recommend users mixing those two environments unless absolutely
+necessary. Note that 
+SURF does not provide any support for Conda environment.
+For more information, please refer to our software policy page:
+https://servicedesk.surf.nl/wiki/display/WIKI/Software+policy+Snellius#SoftwarepolicySnellius-UseofAnacondaandMinicondaenvironmentsonSnellius 
+
+Remember that many packages have already been installed on the system and can
+be loaded using 
+the 'module load <package__name>' command. If you are uncertain if a package is
+already available 
+on the system, please use 'module avail' or 'module spider' to search for it.
+============================================================================================== 
+Arguments:
+batch_size: 64
+valid_ratio: 0.75
+augmentations: False
+pretrained: False
+num_epochs: 30
+train_strats: ['standard']
+visualise: False
+epsilon_fgsm: 0.1
+alpha_fgsm: 0.5
+epsilon_pgd: 0.01
+alpha_pgd: 2
+num_iter_pgd: 10
+save_dir: 
+test_crossover_defense: False
+Device: cuda
+training_strategy: standard
+Loading model
+Loading data
+Downloading https://www.cs.toronto.edu/~kriz/cifar-10-python.tar.gz to ./data/cifar-10-python.tar.gz
+  0%|          | 0.00/170M [00:00<?, ?B/s]  0%|          | 32.8k/170M [00:00<14:44, 193kB/s]  0%|          | 164k/170M [00:00<04:32, 625kB/s]   0%|          | 360k/170M [00:00<02:50, 1.00MB/s]  1%|          | 1.38M/170M [00:00<00:46, 3.61MB/s]  2%|▏         | 2.98M/170M [00:00<00:24, 6.75MB/s]  4%|▍         | 6.82M/170M [00:00<00:10, 15.6MB/s]  6%|▌         | 9.40M/170M [00:00<00:08, 18.5MB/s]  7%|▋         | 11.9M/170M [00:01<00:09, 16.3MB/s]  9%|▉         | 15.5M/170M [00:01<00:07, 21.1MB/s] 11%|█         | 19.0M/170M [00:01<00:06, 24.3MB/s] 14%|█▎        | 23.1M/170M [00:01<00:05, 28.8MB/s] 16%|█▌        | 26.6M/170M [00:01<00:04, 29.1MB/s] 18%|█▊        | 30.8M/170M [00:01<00:04, 32.4MB/s] 20%|██        | 34.5M/170M [00:01<00:04, 31.0MB/s] 23%|██▎       | 38.6M/170M [00:01<00:03, 33.7MB/s] 25%|██▍       | 42.3M/170M [00:01<00:03, 32.8MB/s] 27%|██▋       | 46.5M/170M [00:02<00:03, 35.1MB/s] 29%|██▉       | 50.2M/170M [00:02<00:03, 32.8MB/s] 32%|███▏      | 54.3M/170M [00:02<00:03, 34.8MB/s] 34%|███▍      | 58.1M/170M [00:02<00:03, 33.7MB/s] 36%|███▋      | 61.9M/170M [00:02<00:03, 35.0MB/s] 38%|███▊      | 65.5M/170M [00:02<00:03, 35.0MB/s] 40%|████      | 69.0M/170M [00:02<00:03, 32.9MB/s] 42%|████▏     | 72.4M/170M [00:02<00:02, 32.8MB/s] 45%|████▍     | 76.1M/170M [00:02<00:02, 33.9MB/s] 47%|████▋     | 79.5M/170M [00:03<00:02, 32.2MB/s] 49%|████▊     | 82.9M/170M [00:03<00:02, 32.8MB/s] 51%|█████     | 86.9M/170M [00:03<00:02, 32.3MB/s] 53%|█████▎    | 90.2M/170M [00:03<00:02, 32.4MB/s] 55%|█████▌    | 94.2M/170M [00:03<00:02, 34.5MB/s] 57%|█████▋    | 97.7M/170M [00:03<00:02, 32.6MB/s] 59%|█████▉    | 101M/170M [00:03<00:02, 33.1MB/s]  62%|██████▏   | 105M/170M [00:03<00:02, 32.1MB/s] 64%|██████▍   | 109M/170M [00:03<00:01, 33.8MB/s] 66%|██████▌   | 113M/170M [00:04<00:01, 33.7MB/s] 68%|██████▊   | 116M/170M [00:04<00:01, 32.1MB/s] 70%|███████   | 120M/170M [00:04<00:01, 33.3MB/s] 73%|███████▎  | 124M/170M [00:04<00:01, 31.9MB/s] 75%|███████▍  | 127M/170M [00:04<00:01, 32.6MB/s] 77%|███████▋  | 131M/170M [00:04<00:01, 34.5MB/s] 79%|███████▉  | 135M/170M [00:04<00:01, 33.3MB/s] 81%|████████  | 138M/170M [00:04<00:00, 33.2MB/s] 83%|████████▎ | 141M/170M [00:04<00:00, 33.2MB/s] 85%|████████▍ | 145M/170M [00:05<00:00, 31.2MB/s] 87%|████████▋ | 148M/170M [00:05<00:00, 31.4MB/s] 89%|████████▉ | 151M/170M [00:05<00:00, 32.5MB/s] 91%|█████████ | 155M/170M [00:05<00:00, 32.4MB/s] 93%|█████████▎| 158M/170M [00:05<00:00, 32.4MB/s] 95%|█████████▍| 161M/170M [00:05<00:00, 32.1MB/s] 97%|█████████▋| 165M/170M [00:05<00:00, 32.9MB/s] 99%|█████████▊| 168M/170M [00:05<00:00, 33.6MB/s]100%|██████████| 170M/170M [00:05<00:00, 29.2MB/s]
+Extracting ./data/cifar-10-python.tar.gz to ./data
+Files already downloaded and verified
+Training model
+Epoch 0/29
+----------
+train Loss: 1.7121 Acc: 0.3747
+val Loss: 1.4105 Acc: 0.4734
+Epoch 1/29
+----------
+train Loss: 1.2993 Acc: 0.5307
+val Loss: 1.2107 Acc: 0.5503
+Epoch 2/29
+----------
+train Loss: 1.1020 Acc: 0.6063
+val Loss: 1.1122 Acc: 0.5906
+Epoch 3/29
+----------
+train Loss: 0.9417 Acc: 0.6662
+val Loss: 1.0251 Acc: 0.6243
+Epoch 4/29
+----------
+train Loss: 0.7996 Acc: 0.7194
+val Loss: 0.9793 Acc: 0.6471
+Epoch 5/29
+----------
+train Loss: 0.6668 Acc: 0.7705
+val Loss: 0.9755 Acc: 0.6512
+Epoch 6/29
+----------
+train Loss: 0.5342 Acc: 0.8199
+val Loss: 1.0011 Acc: 0.6535
+Epoch 7/29
+----------
+train Loss: 0.3562 Acc: 0.8984
+val Loss: 0.9463 Acc: 0.6707
+Epoch 8/29
+----------
+train Loss: 0.3230 Acc: 0.9117
+val Loss: 0.9611 Acc: 0.6721
+Epoch 9/29
+----------
+train Loss: 0.3006 Acc: 0.9192
+val Loss: 0.9644 Acc: 0.6698
+Epoch 10/29
+----------
+train Loss: 0.2844 Acc: 0.9255
+val Loss: 0.9731 Acc: 0.6721
+Epoch 11/29
+----------
+train Loss: 0.2703 Acc: 0.9304
+val Loss: 0.9809 Acc: 0.6707
+Epoch 12/29
+----------
+train Loss: 0.2552 Acc: 0.9351
+val Loss: 0.9903 Acc: 0.6721
+Epoch 13/29
+----------
+train Loss: 0.2408 Acc: 0.9402
+val Loss: 1.0005 Acc: 0.6690
+Epoch 14/29
+----------
+train Loss: 0.2242 Acc: 0.9480
+val Loss: 0.9997 Acc: 0.6657
+Epoch 15/29
+----------
+train Loss: 0.2221 Acc: 0.9484
+val Loss: 0.9992 Acc: 0.6675
+Epoch 16/29
+----------
+train Loss: 0.2209 Acc: 0.9489
+val Loss: 1.0033 Acc: 0.6683
+Epoch 17/29
+----------
+train Loss: 0.2184 Acc: 0.9498
+val Loss: 0.9983 Acc: 0.6679
+Epoch 18/29
+----------
+train Loss: 0.2183 Acc: 0.9499
+val Loss: 1.0031 Acc: 0.6699
+Epoch 19/29
+----------
+train Loss: 0.2159 Acc: 0.9502
+val Loss: 1.0055 Acc: 0.6645
+Epoch 20/29
+----------
+train Loss: 0.2167 Acc: 0.9487
+val Loss: 1.0059 Acc: 0.6646
+Epoch 21/29
+----------
+train Loss: 0.2157 Acc: 0.9500
+val Loss: 1.0053 Acc: 0.6674
+Epoch 22/29
+----------
+train Loss: 0.2132 Acc: 0.9518
+val Loss: 1.0045 Acc: 0.6682
+Epoch 23/29
+----------
+train Loss: 0.2147 Acc: 0.9511
+val Loss: 1.0041 Acc: 0.6675
+Epoch 24/29
+----------
+train Loss: 0.2113 Acc: 0.9533
+val Loss: 1.0023 Acc: 0.6683
+Epoch 25/29
+----------
+train Loss: 0.2134 Acc: 0.9521
+val Loss: 1.0089 Acc: 0.6699
+Epoch 26/29
+----------
+train Loss: 0.2121 Acc: 0.9514
+val Loss: 1.0039 Acc: 0.6707
+Epoch 27/29
+----------
+train Loss: 0.2126 Acc: 0.9523
+val Loss: 1.0042 Acc: 0.6687
+Epoch 28/29
+----------
+train Loss: 0.2138 Acc: 0.9509
+val Loss: 1.0078 Acc: 0.6667
+Epoch 29/29
+----------
+train Loss: 0.2130 Acc: 0.9518
+val Loss: 1.0046 Acc: 0.6633
+Training complete in 3m 43s
+Best val Acc: 0.672140
+Testing model
+Accuracy of the network on the test set: 68 %
+Testing adversarial attacks
+Traceback (most recent call last):
+  File "/gpfs/home5/scur2818/uvadlc_practicals_2024/assignment3/part2/train.py", line 92, in <module>
+    main(args)
+  File "/gpfs/home5/scur2818/uvadlc_practicals_2024/assignment3/part2/train.py", line 42, in main
+    adv_acc, adv_examples = test_attack(model, testloader, attack, strategy_args[attack])
+                            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/gpfs/home5/scur2818/uvadlc_practicals_2024/assignment3/part2/adversarial_attack.py", line 141, in test_attack
+    data_grad = data.grad.data
+                ^^^^^^^^^^^^^^
+AttributeError: 'NoneType' object has no attribute 'data'
+srun: error: gcn50: task 0: Exited with exit code 1
+srun: Terminating StepId=8952170.0
+usage: train.py [-h] [--batch_size BATCH_SIZE] [--valid_ratio VALID_RATIO]
+                [--augmentations] [--pretrained] [--num_epochs NUM_EPOCHS]
+                [--train_strats {standard,fgsm,pgd} [{standard,fgsm,pgd} ...]]
+                [--visualise] [--epsilon_fgsm EPSILON_FGSM]
+                [--alpha_fgsm ALPHA_FGSM] [--epsilon_pgd EPSILON_PGD]
+                [--alpha_pgd ALPHA_PGD] [--num_iter_pgd NUM_ITER_PGD]
+                [--save_dir SAVE_DIR] [--test_crossover_defense]
+train.py: error: argument --train_strats: invalid choice: 'FGSM' (choose from 'standard', 'fgsm', 'pgd')
+srun: error: gcn50: task 0: Exited with exit code 2
+srun: Terminating StepId=8952170.1
+usage: train.py [-h] [--batch_size BATCH_SIZE] [--valid_ratio VALID_RATIO]
+                [--augmentations] [--pretrained] [--num_epochs NUM_EPOCHS]
+                [--train_strats {standard,fgsm,pgd} [{standard,fgsm,pgd} ...]]
+                [--visualise] [--epsilon_fgsm EPSILON_FGSM]
+                [--alpha_fgsm ALPHA_FGSM] [--epsilon_pgd EPSILON_PGD]
+                [--alpha_pgd ALPHA_PGD] [--num_iter_pgd NUM_ITER_PGD]
+                [--save_dir SAVE_DIR] [--test_crossover_defense]
+train.py: error: argument --train_strats: invalid choice: 'PGD' (choose from 'standard', 'fgsm', 'pgd')
+srun: error: gcn50: task 0: Exited with exit code 2
+srun: Terminating StepId=8952170.2
+
+JOB STATISTICS
+==============
+Job ID: 8952170
+Cluster: snellius
+User/Group: scur2818/scur2818
+State: FAILED (exit code 2)
+Nodes: 1
+Cores per node: 18
+CPU Utilized: 00:10:51
+CPU Efficiency: 13.40% of 01:21:00 core-walltime
+Job Wall-clock time: 00:04:30
+Memory Utilized: 887.98 MB
+Memory Efficiency: 2.77% of 31.25 GB
