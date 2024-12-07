@@ -85,3 +85,96 @@ train Loss: 0.1266 Acc: 0.4676
 val Loss: 1.6246 Acc: 0.5485
 Epoch 12/29
 ----------
+train Loss: 0.1200 Acc: 0.4704
+val Loss: 1.4987 Acc: 0.5600
+Epoch 13/29
+----------
+train Loss: 0.1139 Acc: 0.4720
+val Loss: 1.6629 Acc: 0.5421
+Epoch 14/29
+----------
+train Loss: 0.1041 Acc: 0.4767
+val Loss: 1.7019 Acc: 0.5331
+Epoch 15/29
+----------
+train Loss: 0.1052 Acc: 0.4760
+val Loss: 1.8469 Acc: 0.5244
+Epoch 16/29
+----------
+train Loss: 0.1033 Acc: 0.4765
+val Loss: 1.6932 Acc: 0.5365
+Epoch 17/29
+----------
+train Loss: 0.1022 Acc: 0.4771
+val Loss: 1.7169 Acc: 0.5425
+Epoch 18/29
+----------
+train Loss: 0.1015 Acc: 0.4771
+val Loss: 1.7378 Acc: 0.5352
+Epoch 19/29
+----------
+train Loss: 0.1010 Acc: 0.4773
+val Loss: 1.6547 Acc: 0.5391
+Epoch 20/29
+----------
+train Loss: 0.1016 Acc: 0.4770
+val Loss: 1.7830 Acc: 0.5322
+Epoch 21/29
+----------
+train Loss: 0.0992 Acc: 0.4779
+val Loss: 1.9749 Acc: 0.5046
+Epoch 22/29
+----------
+train Loss: 0.0987 Acc: 0.4789
+val Loss: 1.7906 Acc: 0.5297
+Epoch 23/29
+----------
+train Loss: 0.0997 Acc: 0.4776
+val Loss: 1.8102 Acc: 0.5233
+Epoch 24/29
+----------
+train Loss: 0.0990 Acc: 0.4783
+val Loss: 1.7408 Acc: 0.5395
+Epoch 25/29
+----------
+train Loss: 0.0995 Acc: 0.4776
+val Loss: 1.6633 Acc: 0.5477
+Epoch 26/29
+----------
+train Loss: 0.1001 Acc: 0.4774
+val Loss: 1.5773 Acc: 0.5520
+Epoch 27/29
+----------
+train Loss: 0.0997 Acc: 0.4784
+val Loss: 1.6925 Acc: 0.5355
+Epoch 28/29
+----------
+train Loss: 0.0993 Acc: 0.4780
+val Loss: 1.4858 Acc: 0.5797
+Epoch 29/29
+----------
+train Loss: 0.0988 Acc: 0.4780
+val Loss: 1.7686 Acc: 0.5290
+Training complete in 30m 3s
+Best val Acc: 0.579714
+Testing model
+Accuracy of the network on the test set: 57 %
+Testing adversarial attacks
+Attack fgsm, args: {'alpha': 0.5, 'epsilon': 0.1}
+Test Accuracy = 442 / 2500 = 0.1768
+Attack pgd, args: {'alpha': 2, 'epsilon': 0.01, 'num_iter': 10}
+Test Accuracy = 352 / 2500 = 0.1408
+
+JOB STATISTICS
+==============
+Job ID: 8952834
+Cluster: snellius
+User/Group: scur2818/scur2818
+State: COMPLETED (exit code 0)
+Nodes: 1
+Cores per node: 18
+CPU Utilized: 00:39:10
+CPU Efficiency: 6.75% of 09:40:30 core-walltime
+Job Wall-clock time: 00:32:15
+Memory Utilized: 880.43 MB
+Memory Efficiency: 2.75% of 31.25 GB

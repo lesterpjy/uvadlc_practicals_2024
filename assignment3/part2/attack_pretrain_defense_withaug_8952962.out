@@ -1,0 +1,326 @@
+============================================================================================== 
+Warning! Mixing Conda and module environments may lead to corruption of the
+user environment. 
+We do not recommend users mixing those two environments unless absolutely
+necessary. Note that 
+SURF does not provide any support for Conda environment.
+For more information, please refer to our software policy page:
+https://servicedesk.surf.nl/wiki/display/WIKI/Software+policy+Snellius#SoftwarepolicySnellius-UseofAnacondaandMinicondaenvironmentsonSnellius 
+
+Remember that many packages have already been installed on the system and can
+be loaded using 
+the 'module load <package__name>' command. If you are uncertain if a package is
+already available 
+on the system, please use 'module avail' or 'module spider' to search for it.
+============================================================================================== 
+Arguments:
+batch_size: 64
+valid_ratio: 0.75
+augmentations: True
+pretrained: True
+num_epochs: 30
+train_strats: ['standard', 'fgsm', 'pgd']
+visualise: False
+epsilon_fgsm: 0.1
+alpha_fgsm: 0.5
+epsilon_pgd: 0.01
+alpha_pgd: 2
+num_iter_pgd: 10
+save_dir: 
+test_crossover_defense: False
+Device: cuda
+training_strategy: standard
+Loading model
+/gpfs/home5/scur2818/uvadlc_practicals_2024/assignment3/part2/cifar10_models/resnet.py:204: FutureWarning: You are using `torch.load` with `weights_only=False` (the current default value), which uses the default pickle module implicitly. It is possible to construct malicious pickle data which will execute arbitrary code during unpickling (See https://github.com/pytorch/pytorch/blob/main/SECURITY.md#untrusted-models for more details). In a future release, the default value for `weights_only` will be flipped to `True`. This limits the functions that could be executed during unpickling. Arbitrary objects will no longer be allowed to be loaded via this mode unless they are explicitly allowlisted by the user via `torch.serialization.add_safe_globals`. We recommend you start setting `weights_only=True` for any use case where you don't have full control of the loaded file. Please open an issue on GitHub for any issues related to this experimental feature.
+  state_dict = torch.load(script_dir + '/state_dicts/'+arch+'.pt', map_location=device)
+Loading data
+Files already downloaded and verified
+Files already downloaded and verified
+Skipping training for standard pretrained model
+Testing model
+Accuracy of the network on the test set: 93 %
+Testing adversarial attacks
+Attack fgsm, args: {'alpha': 0.5, 'epsilon': 0.1}
+Test Accuracy = 1061 / 2500 = 0.4244
+Attack pgd, args: {'alpha': 2, 'epsilon': 0.01, 'num_iter': 10}
+Test Accuracy = 1106 / 2500 = 0.4424
+training_strategy: fgsm
+Loading model
+Loading data
+Files already downloaded and verified
+Files already downloaded and verified
+Training model
+Epoch 0/29
+----------
+train Loss: 0.6195 Acc: 0.9833
+val Loss: 0.3749 Acc: 0.8735
+Epoch 1/29
+----------
+train Loss: 0.4824 Acc: 0.9872
+val Loss: 0.3903 Acc: 0.8709
+Epoch 2/29
+----------
+train Loss: 0.4327 Acc: 0.9881
+val Loss: 0.3805 Acc: 0.8708
+Epoch 3/29
+----------
+train Loss: 0.4033 Acc: 0.9892
+val Loss: 0.3693 Acc: 0.8698
+Epoch 4/29
+----------
+train Loss: 0.3828 Acc: 0.9892
+val Loss: 0.3809 Acc: 0.8724
+Epoch 5/29
+----------
+train Loss: 0.3639 Acc: 0.9900
+val Loss: 0.3746 Acc: 0.8746
+Epoch 6/29
+----------
+train Loss: 0.3490 Acc: 0.9903
+val Loss: 0.3946 Acc: 0.8730
+Epoch 7/29
+----------
+train Loss: 0.3213 Acc: 0.9932
+val Loss: 0.3791 Acc: 0.8747
+Epoch 8/29
+----------
+train Loss: 0.3106 Acc: 0.9940
+val Loss: 0.3810 Acc: 0.8735
+Epoch 9/29
+----------
+train Loss: 0.3030 Acc: 0.9940
+val Loss: 0.3880 Acc: 0.8737
+Epoch 10/29
+----------
+train Loss: 0.3010 Acc: 0.9945
+val Loss: 0.3785 Acc: 0.8778
+Epoch 11/29
+----------
+train Loss: 0.2981 Acc: 0.9945
+val Loss: 0.3743 Acc: 0.8802
+Epoch 12/29
+----------
+train Loss: 0.2962 Acc: 0.9942
+val Loss: 0.3819 Acc: 0.8787
+Epoch 13/29
+----------
+train Loss: 0.2955 Acc: 0.9944
+val Loss: 0.4002 Acc: 0.8730
+Epoch 14/29
+----------
+train Loss: 0.2892 Acc: 0.9947
+val Loss: 0.4162 Acc: 0.8702
+Epoch 15/29
+----------
+train Loss: 0.2900 Acc: 0.9948
+val Loss: 0.3927 Acc: 0.8731
+Epoch 16/29
+----------
+train Loss: 0.2859 Acc: 0.9951
+val Loss: 0.3895 Acc: 0.8747
+Epoch 17/29
+----------
+train Loss: 0.2900 Acc: 0.9949
+val Loss: 0.4044 Acc: 0.8722
+Epoch 18/29
+----------
+train Loss: 0.2895 Acc: 0.9951
+val Loss: 0.3884 Acc: 0.8749
+Epoch 19/29
+----------
+train Loss: 0.2895 Acc: 0.9944
+val Loss: 0.3863 Acc: 0.8782
+Epoch 20/29
+----------
+train Loss: 0.2893 Acc: 0.9953
+val Loss: 0.4064 Acc: 0.8718
+Epoch 21/29
+----------
+train Loss: 0.2859 Acc: 0.9955
+val Loss: 0.3925 Acc: 0.8750
+Epoch 22/29
+----------
+train Loss: 0.2880 Acc: 0.9950
+val Loss: 0.4069 Acc: 0.8727
+Epoch 23/29
+----------
+train Loss: 0.2879 Acc: 0.9947
+val Loss: 0.4032 Acc: 0.8737
+Epoch 24/29
+----------
+train Loss: 0.2881 Acc: 0.9952
+val Loss: 0.4021 Acc: 0.8722
+Epoch 25/29
+----------
+train Loss: 0.2878 Acc: 0.9955
+val Loss: 0.3998 Acc: 0.8727
+Epoch 26/29
+----------
+train Loss: 0.2879 Acc: 0.9937
+val Loss: 0.4050 Acc: 0.8724
+Epoch 27/29
+----------
+train Loss: 0.2856 Acc: 0.9942
+val Loss: 0.3883 Acc: 0.8762
+Epoch 28/29
+----------
+train Loss: 0.2854 Acc: 0.9951
+val Loss: 0.3896 Acc: 0.8759
+Epoch 29/29
+----------
+train Loss: 0.2839 Acc: 0.9953
+val Loss: 0.3933 Acc: 0.8753
+Training complete in 7m 33s
+Best val Acc: 0.880164
+Testing model
+Accuracy of the network on the test set: 88 %
+Testing adversarial attacks
+Attack fgsm, args: {'alpha': 0.5, 'epsilon': 0.1}
+Test Accuracy = 1376 / 2500 = 0.5504
+training_strategy: pgd
+Loading model
+Loading data
+Files already downloaded and verified
+Files already downloaded and verified
+Training model
+Epoch 0/29
+----------
+train Loss: 0.0060 Acc: 0.4981
+val Loss: 1.0016 Acc: 0.7820
+Epoch 1/29
+----------
+train Loss: 0.0123 Acc: 0.4957
+val Loss: 1.1301 Acc: 0.7541
+Epoch 2/29
+----------
+train Loss: 0.0130 Acc: 0.4958
+val Loss: 0.9755 Acc: 0.7640
+Epoch 3/29
+----------
+train Loss: 0.0152 Acc: 0.4950
+val Loss: 0.9308 Acc: 0.7785
+Epoch 4/29
+----------
+train Loss: 0.0107 Acc: 0.4964
+val Loss: 1.0767 Acc: 0.7654
+Epoch 5/29
+----------
+train Loss: 0.0104 Acc: 0.4965
+val Loss: 0.9400 Acc: 0.7926
+Epoch 6/29
+----------
+train Loss: 0.0103 Acc: 0.4965
+val Loss: 0.9296 Acc: 0.7877
+Epoch 7/29
+----------
+train Loss: 0.0082 Acc: 0.4972
+val Loss: 0.9554 Acc: 0.7861
+Epoch 8/29
+----------
+train Loss: 0.0052 Acc: 0.4982
+val Loss: 0.9882 Acc: 0.7769
+Epoch 9/29
+----------
+train Loss: 0.0046 Acc: 0.4984
+val Loss: 0.9947 Acc: 0.7887
+Epoch 10/29
+----------
+train Loss: 0.0043 Acc: 0.4985
+val Loss: 0.8328 Acc: 0.8075
+Epoch 11/29
+----------
+train Loss: 0.0040 Acc: 0.4986
+val Loss: 0.9519 Acc: 0.7959
+Epoch 12/29
+----------
+train Loss: 0.0041 Acc: 0.4986
+val Loss: 0.8376 Acc: 0.8047
+Epoch 13/29
+----------
+train Loss: 0.0034 Acc: 0.4988
+val Loss: 0.9938 Acc: 0.7856
+Epoch 14/29
+----------
+train Loss: 0.0032 Acc: 0.4989
+val Loss: 1.1968 Acc: 0.7655
+Epoch 15/29
+----------
+train Loss: 0.0031 Acc: 0.4989
+val Loss: 0.9281 Acc: 0.8003
+Epoch 16/29
+----------
+train Loss: 0.0033 Acc: 0.4989
+val Loss: 0.9825 Acc: 0.7885
+Epoch 17/29
+----------
+train Loss: 0.0033 Acc: 0.4989
+val Loss: 1.2087 Acc: 0.7570
+Epoch 18/29
+----------
+train Loss: 0.0033 Acc: 0.4988
+val Loss: 0.9874 Acc: 0.7794
+Epoch 19/29
+----------
+train Loss: 0.0037 Acc: 0.4988
+val Loss: 0.8237 Acc: 0.8012
+Epoch 20/29
+----------
+train Loss: 0.0033 Acc: 0.4990
+val Loss: 1.0043 Acc: 0.7844
+Epoch 21/29
+----------
+train Loss: 0.0032 Acc: 0.4989
+val Loss: 0.8122 Acc: 0.8008
+Epoch 22/29
+----------
+train Loss: 0.0035 Acc: 0.4989
+val Loss: 0.8066 Acc: 0.8153
+Epoch 23/29
+----------
+train Loss: 0.0036 Acc: 0.4988
+val Loss: 1.1477 Acc: 0.7794
+Epoch 24/29
+----------
+train Loss: 0.0034 Acc: 0.4988
+val Loss: 0.8472 Acc: 0.7990
+Epoch 25/29
+----------
+train Loss: 0.0034 Acc: 0.4988
+val Loss: 1.1058 Acc: 0.7863
+Epoch 26/29
+----------
+train Loss: 0.0035 Acc: 0.4988
+val Loss: 0.9074 Acc: 0.8002
+Epoch 27/29
+----------
+train Loss: 0.0035 Acc: 0.4988
+val Loss: 1.0822 Acc: 0.7586
+Epoch 28/29
+----------
+train Loss: 0.0031 Acc: 0.4990
+val Loss: 0.8419 Acc: 0.8032
+Epoch 29/29
+----------
+train Loss: 0.0030 Acc: 0.4991
+val Loss: 0.8585 Acc: 0.8040
+Training complete in 29m 54s
+Best val Acc: 0.815281
+Testing model
+Accuracy of the network on the test set: 80 %
+Testing adversarial attacks
+Attack pgd, args: {'alpha': 2, 'epsilon': 0.01, 'num_iter': 10}
+Test Accuracy = 1165 / 2500 = 0.466
+
+JOB STATISTICS
+==============
+Job ID: 8952962
+Cluster: snellius
+User/Group: scur2818/scur2818
+State: COMPLETED (exit code 0)
+Nodes: 1
+Cores per node: 18
+CPU Utilized: 01:02:16
+CPU Efficiency: 8.01% of 12:57:18 core-walltime
+Job Wall-clock time: 00:43:11
+Memory Utilized: 1005.80 MB
+Memory Efficiency: 3.14% of 31.25 GB
