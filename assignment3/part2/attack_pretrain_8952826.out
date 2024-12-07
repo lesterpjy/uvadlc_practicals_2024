@@ -42,3 +42,19 @@ Accuracy of the network on the test set: 92 %
 Testing adversarial attacks
 Attack fgsm, args: {'alpha': 0.5, 'epsilon': 0.1}
 Test Accuracy = 981 / 2500 = 0.3924
+Attack pgd, args: {'alpha': 2, 'epsilon': 0.01, 'num_iter': 10}
+Test Accuracy = 1033 / 2500 = 0.4132
+
+JOB STATISTICS
+==============
+Job ID: 8952826
+Cluster: snellius
+User/Group: scur2818/scur2818
+State: COMPLETED (exit code 0)
+Nodes: 1
+Cores per node: 18
+CPU Utilized: 00:03:01
+CPU Efficiency: 5.46% of 00:55:12 core-walltime
+Job Wall-clock time: 00:03:04
+Memory Utilized: 772.71 MB
+Memory Efficiency: 2.41% of 31.25 GB
