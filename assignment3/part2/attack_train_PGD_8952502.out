@@ -1,0 +1,139 @@
+============================================================================================== 
+Warning! Mixing Conda and module environments may lead to corruption of the
+user environment. 
+We do not recommend users mixing those two environments unless absolutely
+necessary. Note that 
+SURF does not provide any support for Conda environment.
+For more information, please refer to our software policy page:
+https://servicedesk.surf.nl/wiki/display/WIKI/Software+policy+Snellius#SoftwarepolicySnellius-UseofAnacondaandMinicondaenvironmentsonSnellius 
+
+Remember that many packages have already been installed on the system and can
+be loaded using 
+the 'module load <package__name>' command. If you are uncertain if a package is
+already available 
+on the system, please use 'module avail' or 'module spider' to search for it.
+============================================================================================== 
+Arguments:
+batch_size: 64
+valid_ratio: 0.75
+augmentations: False
+pretrained: False
+num_epochs: 30
+train_strats: ['pgd']
+visualise: False
+epsilon_fgsm: 0.1
+alpha_fgsm: 0.5
+epsilon_pgd: 0.01
+alpha_pgd: 2
+num_iter_pgd: 10
+save_dir: 
+test_crossover_defense: False
+Device: cuda
+training_strategy: pgd
+Loading model
+Loading data
+Files already downloaded and verified
+Files already downloaded and verified
+Training model
+Epoch 0/29
+----------
+train Loss: 0.8535 Acc: 0.1876
+val Loss: 1.8759 Acc: 0.3685
+Epoch 1/29
+----------
+train Loss: 0.6401 Acc: 0.2684
+val Loss: 1.9314 Acc: 0.4086
+Epoch 2/29
+----------
+train Loss: 0.5395 Acc: 0.3087
+val Loss: 1.5306 Acc: 0.4889
+Epoch 3/29
+----------
+train Loss: 0.4598 Acc: 0.3368
+val Loss: 2.1543 Acc: 0.4265
+Epoch 4/29
+----------
+train Loss: 0.3910 Acc: 0.3631
+val Loss: 1.8141 Acc: 0.4691
+Epoch 5/29
+----------
+train Loss: 0.3228 Acc: 0.3885
+val Loss: 1.6819 Acc: 0.5000
+Epoch 6/29
+----------
+train Loss: 0.2584 Acc: 0.4123
+val Loss: 1.6339 Acc: 0.5275
+Epoch 7/29
+----------
+train Loss: 0.1697 Acc: 0.4514
+val Loss: 1.6033 Acc: 0.5376
+Epoch 8/29
+----------
+train Loss: 0.1514 Acc: 0.4586
+val Loss: 1.6349 Acc: 0.5363
+Epoch 9/29
+----------
+train Loss: 0.1427 Acc: 0.4620
+val Loss: 1.8004 Acc: 0.5109
+Epoch 10/29
+----------
+train Loss: 0.1322 Acc: 0.4663
+val Loss: 1.6831 Acc: 0.5208
+Epoch 11/29
+----------
+train Loss: 0.1249 Acc: 0.4687
+val Loss: 2.2872 Acc: 0.4517
+Epoch 12/29
+----------
+train Loss: 0.1187 Acc: 0.4702
+val Loss: 1.5725 Acc: 0.5510
+Epoch 13/29
+----------
+train Loss: 0.1105 Acc: 0.4733
+val Loss: 1.5124 Acc: 0.5674
+Epoch 14/29
+----------
+train Loss: 0.1040 Acc: 0.4768
+val Loss: 1.9595 Acc: 0.4971
+Epoch 15/29
+----------
+train Loss: 0.1027 Acc: 0.4768
+val Loss: 1.7700 Acc: 0.5289
+Epoch 16/29
+----------
+train Loss: 0.1025 Acc: 0.4768
+val Loss: 1.9359 Acc: 0.5058
+Epoch 17/29
+----------
+train Loss: 0.1015 Acc: 0.4773
+val Loss: 1.6074 Acc: 0.5571
+Epoch 18/29
+----------
+train Loss: 0.1010 Acc: 0.4777
+val Loss: 1.6974 Acc: 0.5441
+Epoch 19/29
+----------
+train Loss: 0.1001 Acc: 0.4780
+val Loss: 1.6812 Acc: 0.5401
+Epoch 20/29
+----------
+train Loss: 0.0990 Acc: 0.4785
+val Loss: 1.7881 Acc: 0.5233
+Epoch 21/29
+----------
+train Loss: 0.0985 Acc: 0.4789
+val Loss: 1.7367 Acc: 0.5205
+Epoch 22/29
+----------
+train Loss: 0.0983 Acc: 0.4787
+val Loss: 1.5333 Acc: 0.5657
+Epoch 23/29
+----------
+train Loss: 0.0983 Acc: 0.4786
+val Loss: 1.8458 Acc: 0.5138
+Epoch 24/29
+----------
+train Loss: 0.0985 Acc: 0.4785
+val Loss: 2.1393 Acc: 0.4715
+Epoch 25/29
+----------
