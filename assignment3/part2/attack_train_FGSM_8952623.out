@@ -101,3 +101,78 @@ train Loss: 1.4258 Acc: 0.5811
 val Loss: 1.1680 Acc: 0.5756
 Epoch 16/29
 ----------
+train Loss: 1.4254 Acc: 0.5810
+val Loss: 1.1703 Acc: 0.5710
+Epoch 17/29
+----------
+train Loss: 1.4266 Acc: 0.5806
+val Loss: 1.1549 Acc: 0.5783
+Epoch 18/29
+----------
+train Loss: 1.4283 Acc: 0.5787
+val Loss: 1.1626 Acc: 0.5772
+Epoch 19/29
+----------
+train Loss: 1.4222 Acc: 0.5813
+val Loss: 1.1641 Acc: 0.5773
+Epoch 20/29
+----------
+train Loss: 1.4250 Acc: 0.5809
+val Loss: 1.1653 Acc: 0.5753
+Epoch 21/29
+----------
+train Loss: 1.4242 Acc: 0.5810
+val Loss: 1.1644 Acc: 0.5767
+Epoch 22/29
+----------
+train Loss: 1.4240 Acc: 0.5805
+val Loss: 1.1690 Acc: 0.5720
+Epoch 23/29
+----------
+train Loss: 1.4238 Acc: 0.5806
+val Loss: 1.1619 Acc: 0.5783
+Epoch 24/29
+----------
+train Loss: 1.4226 Acc: 0.5815
+val Loss: 1.1595 Acc: 0.5757
+Epoch 25/29
+----------
+train Loss: 1.4221 Acc: 0.5832
+val Loss: 1.1582 Acc: 0.5788
+Epoch 26/29
+----------
+train Loss: 1.4235 Acc: 0.5837
+val Loss: 1.1663 Acc: 0.5771
+Epoch 27/29
+----------
+train Loss: 1.4247 Acc: 0.5826
+val Loss: 1.1574 Acc: 0.5772
+Epoch 28/29
+----------
+train Loss: 1.4212 Acc: 0.5807
+val Loss: 1.1608 Acc: 0.5789
+Epoch 29/29
+----------
+train Loss: 1.4225 Acc: 0.5808
+val Loss: 1.1696 Acc: 0.5728
+Training complete in 7m 44s
+Best val Acc: 0.578919
+Testing model
+Accuracy of the network on the test set: 58 %
+Testing adversarial attacks
+Attack fgsm, args: {'alpha': 0.5, 'epsilon': 0.1}
+Test Accuracy = 462 / 2500 = 0.1848
+
+JOB STATISTICS
+==============
+Job ID: 8952623
+Cluster: snellius
+User/Group: scur2818/scur2818
+State: COMPLETED (exit code 0)
+Nodes: 1
+Cores per node: 18
+CPU Utilized: 00:17:43
+CPU Efficiency: 11.58% of 02:33:00 core-walltime
+Job Wall-clock time: 00:08:30
+Memory Utilized: 888.20 MB
+Memory Efficiency: 2.78% of 31.25 GB
