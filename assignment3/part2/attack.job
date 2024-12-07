@@ -17,4 +17,4 @@ module load Anaconda3/2023.07-2
 # Activate your environment
 source activate dl2024
 # train standard
-srun python -u train.py --pretrained --train_strats standard fgsm pgd --augmentations
+srun python -u train.py --pretrained --train_strats standard fgsm pgd --augmentations --test_crossover_defense 
