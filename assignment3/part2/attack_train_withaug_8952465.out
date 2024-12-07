@@ -1,0 +1,180 @@
+============================================================================================== 
+Warning! Mixing Conda and module environments may lead to corruption of the
+user environment. 
+We do not recommend users mixing those two environments unless absolutely
+necessary. Note that 
+SURF does not provide any support for Conda environment.
+For more information, please refer to our software policy page:
+https://servicedesk.surf.nl/wiki/display/WIKI/Software+policy+Snellius#SoftwarepolicySnellius-UseofAnacondaandMinicondaenvironmentsonSnellius 
+
+Remember that many packages have already been installed on the system and can
+be loaded using 
+the 'module load <package__name>' command. If you are uncertain if a package is
+already available 
+on the system, please use 'module avail' or 'module spider' to search for it.
+============================================================================================== 
+Arguments:
+batch_size: 64
+valid_ratio: 0.75
+augmentations: True
+pretrained: False
+num_epochs: 30
+train_strats: ['standard']
+visualise: False
+epsilon_fgsm: 0.1
+alpha_fgsm: 0.5
+epsilon_pgd: 0.01
+alpha_pgd: 2
+num_iter_pgd: 10
+save_dir: 
+test_crossover_defense: False
+Device: cuda
+training_strategy: standard
+Loading model
+Loading data
+Files already downloaded and verified
+Files already downloaded and verified
+Training model
+Epoch 0/29
+----------
+train Loss: 1.8492 Acc: 0.3154
+val Loss: 1.5186 Acc: 0.4335
+Epoch 1/29
+----------
+train Loss: 1.4805 Acc: 0.4550
+val Loss: 1.2992 Acc: 0.5168
+Epoch 2/29
+----------
+train Loss: 1.3395 Acc: 0.5107
+val Loss: 1.1985 Acc: 0.5633
+Epoch 3/29
+----------
+train Loss: 1.2421 Acc: 0.5487
+val Loss: 1.1510 Acc: 0.5745
+Epoch 4/29
+----------
+train Loss: 1.1609 Acc: 0.5823
+val Loss: 1.0448 Acc: 0.6212
+Epoch 5/29
+----------
+train Loss: 1.0867 Acc: 0.6111
+val Loss: 1.0593 Acc: 0.6178
+Epoch 6/29
+----------
+train Loss: 1.0212 Acc: 0.6330
+val Loss: 0.9932 Acc: 0.6437
+Epoch 7/29
+----------
+train Loss: 0.9625 Acc: 0.6564
+val Loss: 0.8917 Acc: 0.6796
+Epoch 8/29
+----------
+train Loss: 0.9467 Acc: 0.6594
+val Loss: 0.8913 Acc: 0.6778
+Epoch 9/29
+----------
+train Loss: 0.9384 Acc: 0.6652
+val Loss: 0.8825 Acc: 0.6817
+Epoch 10/29
+----------
+train Loss: 0.9320 Acc: 0.6678
+val Loss: 0.8814 Acc: 0.6838
+Epoch 11/29
+----------
+train Loss: 0.9256 Acc: 0.6675
+val Loss: 0.8727 Acc: 0.6830
+Epoch 12/29
+----------
+train Loss: 0.9190 Acc: 0.6709
+val Loss: 0.8692 Acc: 0.6850
+Epoch 13/29
+----------
+train Loss: 0.9118 Acc: 0.6753
+val Loss: 0.8704 Acc: 0.6868
+Epoch 14/29
+----------
+train Loss: 0.9045 Acc: 0.6754
+val Loss: 0.8671 Acc: 0.6899
+Epoch 15/29
+----------
+train Loss: 0.9033 Acc: 0.6796
+val Loss: 0.8657 Acc: 0.6905
+Epoch 16/29
+----------
+train Loss: 0.9021 Acc: 0.6777
+val Loss: 0.8623 Acc: 0.6908
+Epoch 17/29
+----------
+train Loss: 0.9049 Acc: 0.6774
+val Loss: 0.8614 Acc: 0.6895
+Epoch 18/29
+----------
+train Loss: 0.9022 Acc: 0.6776
+val Loss: 0.8578 Acc: 0.6936
+Epoch 19/29
+----------
+train Loss: 0.9013 Acc: 0.6788
+val Loss: 0.8578 Acc: 0.6901
+Epoch 20/29
+----------
+train Loss: 0.9033 Acc: 0.6763
+val Loss: 0.8598 Acc: 0.6917
+Epoch 21/29
+----------
+train Loss: 0.9011 Acc: 0.6799
+val Loss: 0.8584 Acc: 0.6916
+Epoch 22/29
+----------
+train Loss: 0.9032 Acc: 0.6767
+val Loss: 0.8563 Acc: 0.6921
+Epoch 23/29
+----------
+train Loss: 0.9019 Acc: 0.6763
+val Loss: 0.8594 Acc: 0.6907
+Epoch 24/29
+----------
+train Loss: 0.9008 Acc: 0.6792
+val Loss: 0.8585 Acc: 0.6913
+Epoch 25/29
+----------
+train Loss: 0.9029 Acc: 0.6786
+val Loss: 0.8561 Acc: 0.6912
+Epoch 26/29
+----------
+train Loss: 0.9011 Acc: 0.6799
+val Loss: 0.8588 Acc: 0.6890
+Epoch 27/29
+----------
+train Loss: 0.8994 Acc: 0.6784
+val Loss: 0.8557 Acc: 0.6905
+Epoch 28/29
+----------
+train Loss: 0.8999 Acc: 0.6787
+val Loss: 0.8559 Acc: 0.6917
+Epoch 29/29
+----------
+train Loss: 0.9000 Acc: 0.6767
+val Loss: 0.8611 Acc: 0.6903
+Training complete in 4m 9s
+Best val Acc: 0.693591
+Testing model
+Accuracy of the network on the test set: 68 %
+Testing adversarial attacks
+Attack fgsm, args: {'alpha': 0.5, 'epsilon': 0.1}
+Test Accuracy = 326 / 2500 = 0.1304
+Attack pgd, args: {'alpha': 2, 'epsilon': 0.01, 'num_iter': 10}
+Test Accuracy = 453 / 2500 = 0.1812
+
+JOB STATISTICS
+==============
+Job ID: 8952465
+Cluster: snellius
+User/Group: scur2818/scur2818
+State: COMPLETED (exit code 0)
+Nodes: 1
+Cores per node: 18
+CPU Utilized: 00:15:27
+CPU Efficiency: 12.84% of 02:00:18 core-walltime
+Job Wall-clock time: 00:06:41
+Memory Utilized: 878.36 MB
+Memory Efficiency: 2.74% of 31.25 GB

@@ -17,4 +17,4 @@ module load Anaconda3/2023.07-2
 # Activate your environment
 source activate dl2024
 # train standard
-srun python -u train.py --augmentations True
+srun python -u train.py --augmentations
